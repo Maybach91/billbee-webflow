@@ -168,7 +168,7 @@ const SignUp = () => {
         debug && console.count("username check count: ");
         await makeRequest({
           method: "GET",
-          url: checkUsernameApiUrl + value
+          url: encodeURIComponent(checkUsernameApiUrl + value)
         }).then((data) => {
           if (data.length) {
             debug &&
@@ -255,7 +255,7 @@ const SignUp = () => {
     }
     makeRequest({
       method: "POST",
-      url: createAccountApiUrl,
+      url: encodeURIComponent(createAccountApiUrl),
       params: FormDataJson,
       headers: {
         "Content-Type": "application/json; charset=utf-8"
