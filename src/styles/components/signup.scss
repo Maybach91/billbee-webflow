@@ -14,7 +14,7 @@
 
 .has-danger {
   input {
-    border: 2px solid  darken($primary-color,30%);
+    border: 1px solid darken($yellow-color,30%);
   }
 
   span, p {
@@ -27,6 +27,10 @@
   margin-bottom: -4px;
   transition: 200ms ease opacity;
 
+  input {
+    position: relative;
+    z-index: 2;
+  }
   &.is-loading {
     .form-loader-container {
       .loader {
