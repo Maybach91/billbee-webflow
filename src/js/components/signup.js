@@ -1,6 +1,7 @@
 import Pristine from '../vendor/pristine';
 
 const SignUp = () => {
+  console.log("signup.js:4 SignUp()", env);
   // -----------------------
   // Variables Configuration
   // -----------------------
@@ -10,7 +11,7 @@ const SignUp = () => {
     passwordFieldId: "password",
     emailFieldId: "email",
     // API
-    proxy: "https://api.allorigins.win/raw?url=",
+    proxy: (window.location.hostname.indexOf("billbee.io") >= 0) ? "" : "https://api.allorigins.win/raw?url=",
     createAccountApiUrl:
       "https://app.billbee.io/api/v1/internalapi/createaccount",
     checkUsernameApiUrl:

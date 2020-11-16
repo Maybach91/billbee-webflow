@@ -61,6 +61,7 @@
   position: absolute;
   right: 6px;
   top: calc(50% - 9px);
+  z-index: 3;
 
   .loader {
     position: relative;
