@@ -6,7 +6,7 @@ const SignUp = () => {
   // -----------------------
   const formConfig = {
     // Form Inputs
-    formId: "registerform",
+    formId: "signup",
     passwordFieldId: "password",
     emailFieldId: "email",
     // API

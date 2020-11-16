@@ -73,10 +73,7 @@ module.exports = {
         use: [
           'raw-loader',
           {
-            loader: 'twig-html-loader',
-            options: {
-              debug: true
-            }
+            loader: 'twig-html-loader'
           }
         ]
       },
