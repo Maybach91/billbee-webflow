@@ -1,0 +1,84 @@
+<!-- component -->
+<div class="flex items-center justify-center">
+    <div class="w-full max-w-md form-group">
+        <form id="registerform" class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4 form-group">
+            <!-- @csrf -->
+            <div class="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4">
+                Login
+            </div>
+            <div class="my-4"><p class="text-sm leading-5 text-gray-600">This login sends a request
+                    to a API and check if the E-Mail is set.</p></div>
+            <div class="mb-4 form-group">
+                <label class="block text-gray-700 text-sm font-normal mb-2" for="email">
+                    Email
+                </label>
+                <div class="input-container">
+                    <input id="email"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           name="email"
+                           data-remote="https://app.billbee.io/api/v1/internalapi/checkusername"
+                           data-pristine-required-message="Bitte eine E-Mail Adresse angeben."
+                           data-pristine-email-message="Bitte eine gültige E-Mail Adresse eingeben."
+                           type="email" required autofocus placeholder="Email"/>
+                    <div class="form-loader-container">
+                        <i class="loader"></i>
+                        <div class="checkmark">
+                            <div class="checkmark_stem"></div>
+                            <div class="checkmark_kick"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="mb-6 form-group">
+                <label class="block text-gray-700 text-sm font-normal mb-2" for="password">
+                    Password
+                </label>
+                <div class="input-container">
+                    <input data-pristine-required-message="Bitte ein Passwort eingeben."
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           type="password" placeholder="Password" id="password" name="password"
+                           required autocomplete="new-password"/>
+
+                    <div class="form-loader-container">
+                        <i class="loader"></i>
+                        <div class="checkmark">
+                            <div class="checkmark_stem"></div>
+                            <div class="checkmark_kick"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="mb-6 form-group">
+
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input id="acceptterms" type="checkbox" name="acceptterms" required
+                               data-pristine-required-message="Bitte zuerst die AGB & Datenschutz akzeptieren."
+                               class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out">
+                    </div>
+                    <div class="ml-3 text-sm leading-5">
+                        <label for="acceptterms" class="font-medium text-gray-700">I accept the
+                            terms</label>
+                        <p class="text-gray-500">Get notified when a candidate applies for a
+                            job.</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="flex items-center justify-between">
+                <button class="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700"
+                        type="submit">Sign Up
+                </button>
+                <a class="inline-block align-baseline font-normal text-sm text-blue-500 hover:text-blue-800"
+                   href="#">
+                    Forgot Password?
+                </a>
+            </div>
+        </form>
+        <p class="text-center text-gray-500 text-xs">
+            &copy;2020 All rights reserved.
+        </p>
+    </div>
+</div>
