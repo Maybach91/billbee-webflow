@@ -1,59 +1,97 @@
 
 .pristine-error {
   display: table;
+  background-color: $yellow-color;
+  color: $background-color;
+  width: 100%;
+  position: relative;
+  border-radius: 4px;
+  padding: 9px 10px 9px 10px;
+  z-index: 0;
+  font-size: 0.9rem;
+}
+
+.has-danger {
+  input {
+    border-color: $yellow-color;
+  }
+
+  span, p {
+    color: $yellow-color;
+  }
 }
 
 .input-container {
   position: relative;
-
-}
-.input-container.is-loading .form-loader-container .loader {
-  opacity:1;
-
+  z-index: 1;
+  margin-bottom: -4px;
   transition: 200ms ease opacity;
-}
-.input-container.is-successful .form-loader-container .checkmark {
-  opacity: 1;
-}
-.form-loader-container {
 
+  &.is-loading {
+    .form-loader-container {
+      .loader {
+        opacity: 1;
+      }
+
+      .checkmark {
+        opacity: 0;
+      }
+    }
+  }
+
+  &.is-successful {
+    .form-loader-container {
+      .checkmark {
+        opacity: 1;
+      }
+
+      .loader {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+.form-loader-container {
   transition: 200ms ease opacity;
   position: absolute;
   right: 6px;
   top: calc(50% - 9px);
+
+  .loader {
+    position: relative;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    animation: around 5.4s infinite;
+    opacity: 0;
+
+    &::after,
+    &::before {
+      content: "";
+      background: transparent;
+      position: absolute;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      border-width: 2px;
+      border-color: $primary-color $primary-color transparent transparent;
+      border-style: solid;
+      border-radius: 20px;
+      box-sizing: border-box;
+      top: 0;
+      left: 0;
+      animation: around 0.7s ease-in-out infinite;
+    }
+
+    &::after {
+      animation: around 0.7s ease-in-out 0.1s infinite;
+      background: transparent;
+    }
+  }
+
 }
 
-.form-loader-container .loader {
-  position: relative;
-  height: 16px;
-  width: 16px;
-  display: inline-block;
-  animation: around 5.4s infinite;
-  opacity: 0;
-}
-
-.form-loader-container .loader::after,
-.form-loader-container .loader::before {
-  content: "";
-  background: transparent;
-  position: absolute;
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  border-width: 2px;
-  border-color: #00c069 #00c069 transparent transparent;
-  border-style: solid;
-  border-radius: 20px;
-  box-sizing: border-box;
-  top: 0;
-  left: 0;
-  animation: around 0.7s ease-in-out infinite;
-}
-
-.form-loader-container .loader::after {
-  animation: around 0.7s ease-in-out 0.1s infinite;
-  background: transparent;
-}
 
 @keyframes around {
   0% {
@@ -63,32 +101,35 @@
     transform: rotate(360deg)
   }
 }
+
 .checkmark {
-  display:inline-block;
-  opacity: 0;
+  display: inline-block;
+  opacity: 1;
   position: absolute;
-  right: 0px;
+  right: -5px;
+  top: -1px;
   width: 22px;
-  height:22px;
+  height: 22px;
   -ms-transform: rotate(45deg); /* IE 9 */
   -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
   transform: rotate(45deg);
+
+  .checkmark_stem {
+    position: absolute;
+    width: 2px;
+    height: 12px;
+    background-color: $primary-color;
+    left: 11px;
+    top: 5px;
+  }
+
+  .checkmark_kick {
+    position: absolute;
+    width: 4px;
+    height: 2px;
+    background-color: $primary-color;
+    left: 7px;
+    top: 15px;
+  }
 }
 
-.checkmark_stem {
-  position: absolute;
-  width:3px;
-  height:9px;
-  background-color:#ccc;
-  left:11px;
-  top:6px;
-}
-
-.checkmark_kick {
-  position: absolute;
-  width:3px;
-  height:3px;
-  background-color:#ccc;
-  left:8px;
-  top:12px;
-}
