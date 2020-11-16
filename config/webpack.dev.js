@@ -8,6 +8,9 @@ module.exports = merge(common, {
   // Set the mode to development or production
   mode: 'development',
 
+  entry: { tailwind: './node_modules/tailwindcss/dist/tailwind.css' } ,
+  // Where webpack looks to start building the bundle
+  //entry: [paths.src + '/index.js'],
   // Control how source maps are generated
   devtool: 'inline-source-map',
 
