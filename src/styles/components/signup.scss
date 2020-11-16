@@ -8,12 +8,13 @@
   border-radius: 4px;
   padding: 9px 10px 9px 10px;
   z-index: 0;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  text-align: left;
 }
 
 .has-danger {
   input {
-    border-color: $yellow-color;
+    border: 2px solid  darken($primary-color,30%);
   }
 
   span, p {
