@@ -1,1 +1,1410 @@
-(()=>{var e={323:function(e){e.exports=function(){"use strict";var e={en:{required:"This field is required",email:"This field requires a valid e-mail address",number:"This field requires a number",integer:"This field requires an integer value",url:"This field requires a valid website URL",tel:"This field requires a valid telephone number",maxlength:"This fields length must be < ${1}",minlength:"This fields length must be > ${1}",min:"Minimum value for this field is ${1}",max:"Maximum value for this field is ${1}",pattern:"Please match the requested format",equals:"The two fields do not match"}};function t(e){var t=arguments;return this.replace(/\${([^{}]*)}/g,(function(e,r){return t[r]}))}function r(e){return e.pristine.self.form.querySelectorAll('input[name="'+e.getAttribute("name")+'"]:checked').length}var n={classTo:"form-group",errorClass:"has-danger",successClass:"has-success",errorTextParent:"form-group",errorTextTag:"div",errorTextClass:"text-help"},i=["required","min","max","minlength","maxlength","pattern"],o=/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,s=/-message(?:-([a-z]{2}(?:_[A-Z]{2})?))?/,a="en",u={},c=function(e,t){t.name=e,void 0===t.priority&&(t.priority=1),u[e]=t};function l(r,o,c){var l=this;function g(e,t,r,n){var i=u[r];if(i&&(e.push(i),n)){var o="pattern"===r?[n]:n.split(",");o.unshift(null),t[r]=o}}function M(r){for(var n=[],i=!0,o=0;r.validators[o];o++){var s=r.validators[o],u=r.params[s.name]?r.params[s.name]:[];if(u[0]=r.input.value,!s.fn.apply(r.input,u)&&(i=!1,"function"==typeof s.msg?n.push(s.msg(r.input.value,u)):"string"==typeof s.msg?n.push(t.apply(s.msg,u)):s.msg===Object(s.msg)&&s.msg[a]?n.push(t.apply(s.msg[a],u)):r.messages[a]&&r.messages[a][s.name]?n.push(t.apply(r.messages[a][s.name],u)):e[a]&&e[a][s.name]&&n.push(t.apply(e[a][s.name],u)),!0===s.halt))break}return r.errors=n,i}function f(e){if(e.errorElements)return e.errorElements;var t=function(e,t){for(;(e=e.parentElement)&&!e.classList.contains(t););return e}(e.input,l.config.classTo),r=null,n=null;return(r=l.config.classTo===l.config.errorTextParent?t:t.querySelector("."+l.config.errorTextParent))&&((n=r.querySelector(".pristine-error"))||((n=document.createElement(l.config.errorTextTag)).className="pristine-error "+l.config.errorTextClass,r.appendChild(n),n.pristineDisplay=n.style.display)),e.errorElements=[t,n]}function d(e){var t=f(e),r=t[0],n=t[1];r&&(r.classList.remove(l.config.successClass),r.classList.add(l.config.errorClass)),n&&(n.innerHTML=e.errors.join("<br/>"),n.style.display=n.pristineDisplay||"")}function p(e){var t=function(e){var t=f(e),r=t[0],n=t[1];return r&&(r.classList.remove(l.config.errorClass),r.classList.remove(l.config.successClass)),n&&(n.innerHTML="",n.style.display="none"),t}(e)[0];t&&t.classList.add(l.config.successClass)}return function(e,t,r){e.setAttribute("novalidate","true"),l.form=e,l.config=function(e,t){for(var r in t)r in e||(e[r]=t[r]);return e}(t||{},n),l.live=!(!1===r),l.fields=Array.from(e.querySelectorAll("input:not([type^=hidden]):not([type^=submit]), select, textarea")).map(function(e){var t=[],r={},n={};return[].forEach.call(e.attributes,(function(e){if(/^data-pristine-/.test(e.name)){var o=e.name.substr(14),a=o.match(s);if(null!==a){var u=void 0===a[1]?"en":a[1];return n.hasOwnProperty(u)||(n[u]={}),void(n[u][o.slice(0,o.length-a[0].length)]=e.value)}"type"===o&&(o=e.value),g(t,r,o,e.value)}else~i.indexOf(e.name)?g(t,r,e.name,e.value):"type"===e.name&&g(t,r,e.value)})),t.sort((function(e,t){return t.priority-e.priority})),l.live&&e.addEventListener(~["radio","checkbox"].indexOf(e.getAttribute("type"))?"change":"input",function(e){l.validate(e.target)}.bind(l)),e.pristine={input:e,validators:t,params:r,messages:n,self:l}}.bind(l))}(r,o,c),l.validate=function(e,t){t=e&&!0===t||!0===e;var r=l.fields;!0!==e&&!1!==e&&(e instanceof HTMLElement?r=[e.pristine]:(e instanceof NodeList||e instanceof(window.$||Array)||e instanceof Array)&&(r=Array.from(e).map((function(e){return e.pristine}))));for(var n=!0,i=0;r[i];i++){var o=r[i];M(o)?!t&&p(o):(n=!1,!t&&d(o))}return n},l.getErrors=function(e){if(!e){for(var t=[],r=0;r<l.fields.length;r++){var n=l.fields[r];n.errors.length&&t.push({input:n.input,errors:n.errors})}return t}return e.tagName&&"select"===e.tagName.toLowerCase()?e.pristine.errors:e.length?e[0].pristine.errors:e.pristine.errors},l.addValidator=function(e,t,r,n,i){e instanceof HTMLElement?(e.pristine.validators.push({fn:t,msg:r,priority:n,halt:i}),e.pristine.validators.sort((function(e,t){return t.priority-e.priority}))):console.warn("The parameter elem must be a dom element")},l.addError=function(e,t){(e=e.length?e[0]:e).pristine.errors.push(t),d(e.pristine)},l.reset=function(){for(var e=0;l.fields[e];e++)l.fields[e].errorElements=null;Array.from(l.form.querySelectorAll(".pristine-error")).map((function(e){e.parentNode.removeChild(e)})),Array.from(l.form.querySelectorAll("."+l.config.classTo)).map((function(e){e.classList.remove(l.config.successClass),e.classList.remove(l.config.errorClass)}))},l.destroy=function(){l.reset(),l.fields.forEach((function(e){delete e.input.pristine})),l.fields=[]},l.setGlobalConfig=function(e){n=e},l}return c("text",{fn:function(e){return!0},priority:0}),c("required",{fn:function(e){return"radio"===this.type||"checkbox"===this.type?r(this):void 0!==e&&""!==e},priority:99,halt:!0}),c("email",{fn:function(e){return!e||o.test(e)}}),c("number",{fn:function(e){return!e||!isNaN(parseFloat(e))},priority:2}),c("integer",{fn:function(e){return!e||/^\d+$/.test(e)}}),c("minlength",{fn:function(e,t){return!e||e.length>=parseInt(t)}}),c("maxlength",{fn:function(e,t){return!e||e.length<=parseInt(t)}}),c("min",{fn:function(e,t){return!e||("checkbox"===this.type?r(this)>=parseInt(t):parseFloat(e)>=parseFloat(t))}}),c("max",{fn:function(e,t){return!e||("checkbox"===this.type?r(this)<=parseInt(t):parseFloat(e)<=parseFloat(t))}}),c("pattern",{fn:function(e,t){var r=t.match(new RegExp("^/(.*?)/([gimy]*)$"));return!e||new RegExp(r[1],r[2]).test(e)}}),c("equals",{fn:function(e,t){var r=document.querySelector(t);return r&&(!e&&!r.value||r.value===e)}}),l.addValidator=function(e,t,r,n,i){c(e,{fn:t,msg:r,priority:n,halt:i})},l.addMessages=function(t,r){var n=e.hasOwnProperty(t)?e[t]:e[t]={};Object.keys(r).forEach((function(e,t){n[e]=r[e]}))},l.setLocale=function(e){a=e},l}()},969:(e,t,r)=>{"use strict";r.d(t,{Z:()=>a});var n=r(15),i=r.n(n),o=r(645),s=r.n(o)()(i());s.push([e.id,"","",{version:3,sources:[],names:[],mappings:"",sourceRoot:""}]);const a=s},645:e=>{"use strict";e.exports=function(e){var t=[];return t.toString=function(){return this.map((function(t){var r=e(t);return t[2]?"@media ".concat(t[2]," {").concat(r,"}"):r})).join("")},t.i=function(e,r,n){"string"==typeof e&&(e=[[null,e,""]]);var i={};if(n)for(var o=0;o<this.length;o++){var s=this[o][0];null!=s&&(i[s]=!0)}for(var a=0;a<e.length;a++){var u=[].concat(e[a]);n&&i[u[0]]||(r&&(u[2]?u[2]="".concat(r," and ").concat(u[2]):u[2]=r),t.push(u))}},t}},15:e=>{"use strict";function t(e,t){(null==t||t>e.length)&&(t=e.length);for(var r=0,n=new Array(t);r<t;r++)n[r]=e[r];return n}e.exports=function(e){var r,n,i=(n=4,function(e){if(Array.isArray(e))return e}(r=e)||function(e,t){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e)){var r=[],n=!0,i=!1,o=void 0;try{for(var s,a=e[Symbol.iterator]();!(n=(s=a.next()).done)&&(r.push(s.value),!t||r.length!==t);n=!0);}catch(e){i=!0,o=e}finally{try{n||null==a.return||a.return()}finally{if(i)throw o}}return r}}(r,n)||function(e,r){if(e){if("string"==typeof e)return t(e,r);var n=Object.prototype.toString.call(e).slice(8,-1);return"Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?Array.from(e):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?t(e,r):void 0}}(r,n)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()),o=i[1],s=i[3];if("function"==typeof btoa){var a=btoa(unescape(encodeURIComponent(JSON.stringify(s)))),u="sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(a),c="/*# ".concat(u," */"),l=s.sources.map((function(e){return"/*# sourceURL=".concat(s.sourceRoot||"").concat(e," */")}));return[o].concat(l).concat([c]).join("\n")}return[o].join("\n")}},379:(e,t,r)=>{"use strict";var n,i=function(){var e={};return function(t){if(void 0===e[t]){var r=document.querySelector(t);if(window.HTMLIFrameElement&&r instanceof window.HTMLIFrameElement)try{r=r.contentDocument.head}catch(e){r=null}e[t]=r}return e[t]}}(),o=[];function s(e){for(var t=-1,r=0;r<o.length;r++)if(o[r].identifier===e){t=r;break}return t}function a(e,t){for(var r={},n=[],i=0;i<e.length;i++){var a=e[i],u=t.base?a[0]+t.base:a[0],c=r[u]||0,l="".concat(u," ").concat(c);r[u]=c+1;var g=s(l),M={css:a[1],media:a[2],sourceMap:a[3]};-1!==g?(o[g].references++,o[g].updater(M)):o.push({identifier:l,updater:p(M,t),references:1}),n.push(l)}return n}function u(e){var t=document.createElement("style"),n=e.attributes||{};if(void 0===n.nonce){var o=r.nc;o&&(n.nonce=o)}if(Object.keys(n).forEach((function(e){t.setAttribute(e,n[e])})),"function"==typeof e.insert)e.insert(t);else{var s=i(e.insert||"head");if(!s)throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");s.appendChild(t)}return t}var c,l=(c=[],function(e,t){return c[e]=t,c.filter(Boolean).join("\n")});function g(e,t,r,n){var i=r?"":n.media?"@media ".concat(n.media," {").concat(n.css,"}"):n.css;if(e.styleSheet)e.styleSheet.cssText=l(t,i);else{var o=document.createTextNode(i),s=e.childNodes;s[t]&&e.removeChild(s[t]),s.length?e.insertBefore(o,s[t]):e.appendChild(o)}}function M(e,t,r){var n=r.css,i=r.media,o=r.sourceMap;if(i?e.setAttribute("media",i):e.removeAttribute("media"),o&&"undefined"!=typeof btoa&&(n+="\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(o))))," */")),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}var f=null,d=0;function p(e,t){var r,n,i;if(t.singleton){var o=d++;r=f||(f=u(t)),n=g.bind(null,r,o,!1),i=g.bind(null,r,o,!0)}else r=u(t),n=M.bind(null,r,t),i=function(){!function(e){if(null===e.parentNode)return!1;e.parentNode.removeChild(e)}(r)};return n(e),function(t){if(t){if(t.css===e.css&&t.media===e.media&&t.sourceMap===e.sourceMap)return;n(e=t)}else i()}}e.exports=function(e,t){(t=t||{}).singleton||"boolean"==typeof t.singleton||(t.singleton=(void 0===n&&(n=Boolean(window&&document&&document.all&&!window.atob)),n));var r=a(e=e||[],t);return function(e){if(e=e||[],"[object Array]"===Object.prototype.toString.call(e)){for(var n=0;n<r.length;n++){var i=s(r[n]);o[i].references--}for(var u=a(e,t),c=0;c<r.length;c++){var l=s(r[c]);0===o[l].references&&(o[l].updater(),o.splice(l,1))}r=u}}}},695:e=>{"use strict";e.exports="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzOTE2IDE1MjQiPjx0aXRsZT5sb2dvLW9uLWRhcmstYmc8L3RpdGxlPjxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik04MjIgMzM2bDM4NyAyMTguOXY0MzcuOWwtMzg3IDIxOC45LTM4Ny0yMTguOVY1NTQuOXoiLz48cGF0aCBmaWxsPSIjOEVENkZCIiBkPSJNMTEzOS45IDk3Ny43bC0zMDUuMSAxNzIuNnYtMTM0LjRsMTkwLjEtMTA0LjYgMTE1IDY2LjR6bTIwLjktMTguOVY1OTcuOWwtMTExLjYgNjQuNXYyMzJsMTExLjYgNjQuNHptLTY1Ny45IDE4LjlMODA4IDExNTAuM3YtMTM0LjRMNjE3LjggOTExLjNsLTExNC45IDY2LjR6TTQ4MiA5NTguOFY1OTcuOWwxMTEuNiA2NC41djIzMkw0ODIgOTU4Ljh6bTEzLjEtMzg0LjNsMzEyLjktMTc3djEyOS45TDYwNy41IDYzNy43bC0xLjYuOS0xMTAuOC02NC4xem02NTIuNiAwbC0zMTIuOS0xNzd2MTI5LjlsMjAwLjUgMTEwLjIgMS42LjkgMTEwLjgtNjR6Ii8+PHBhdGggZmlsbD0iIzFDNzhDMCIgZD0iTTgwOCA5ODUuM0w2MjAuNCA4ODIuMVY2NzcuOEw4MDggNzg2LjF2MTk5LjJ6bTI2LjggMGwxODcuNi0xMDMuMVY2NzcuOEw4MzQuOCA3ODYuMXYxOTkuMnptLTEzLjQtMjA3ek02MzMuMSA2NTQuMmwxODguMy0xMDMuNSAxODguMyAxMDMuNS0xODguMyAxMDguNy0xODguMy0xMDguN3oiLz48cGF0aCBmaWxsPSIjRjVGQUZBIiBkPSJNMTU5OS4zIDkxMi4zaDgyLjVsODQuMS0yODAuMmgtODAuNGwtNDkuOCAxOTguOC01My4xLTE5OC44SDE1MTNsLTUzLjYgMTk4LjgtNDkuMy0xOTguOGgtODAuNGw4My42IDI4MC4yaDgyLjVsNTItMTc5LjUgNTEuNSAxNzkuNXpNMTc3MC4yIDc3M2MwIDg0LjEgNTcuMyAxNDYuMyAxNDcuNCAxNDYuMyA2OS43IDAgMTA3LjItNDEuOCAxMTcuOS02MS42bC00OC44LTM3Yy04IDExLjgtMzAgMzQuMy02OC4xIDM0LjMtNDEuMyAwLTcxLjMtMjYuOC03Mi45LTY0LjNIMjA0M2MuNS01LjQuNS0xMC43LjUtMTYuMSAwLTkxLjYtNDkuMy0xNDkuNS0xMzYuMS0xNDkuNS03OS45IDAtMTM3LjIgNjMuMi0xMzcuMiAxNDcuOXptNzcuNy0zMC42YzMuMi0zMi4xIDI1LjctNTYuOCA2MC42LTU2LjggMzMuOCAwIDU4LjQgMjIuNSA2MCA1Ni44aC0xMjAuNnptMjIzLjUgMTY5LjloNjkuN3YtMjguOWM3LjUgOS4xIDM1LjQgMzUuOSA4My4xIDM1LjkgODAuNCAwIDEzNy4yLTYwLjUgMTM3LjItMTQ2LjggMC04Ni44LTUyLjUtMTQ3LjMtMTMyLjktMTQ3LjMtNDguMiAwLTc2LjEgMjYuOC04My4xIDM2LjRWNTI0LjloLTczLjl2Mzg3LjR6bTcxLjgtMTM5LjNjMC01Mi41IDMxLjEtODIuNSA3MS44LTgyLjUgNDIuOSAwIDcxLjggMzMuOCA3MS44IDgyLjUgMCA0OS44LTMwIDgwLjktNzEuOCA4MC45LTQ1IDAtNzEuOC0zNi41LTcxLjgtODAuOXptMjQ3IDIzOS41aDczLjlWODgzLjNjNyA5LjEgMzQuOCAzNS45IDgzLjEgMzUuOSA4MC40IDAgMTMyLjktNjAuNSAxMzIuOS0xNDcuMyAwLTg1LjctNTYuOC0xNDYuOC0xMzcuMi0xNDYuOC00Ny43IDAtNzUuNiAyNi44LTgzLjEgMzYuNFY2MzJoLTY5Ljd2MzgwLjV6bTcxLjgtMjQxLjFjMC00NC41IDI2LjgtODAuOSA3MS44LTgwLjkgNDEuOCAwIDcxLjggMzEuMSA3MS44IDgwLjkgMCA0OC44LTI4LjkgODIuNS03MS44IDgyLjUtNDAuNyAwLTcxLjgtMzAtNzEuOC04Mi41em0yMzEuNSA1NC4xYzAgNTguOSA0OC4yIDkzLjggMTA1IDkzLjggMzIuMiAwIDUzLjYtOS42IDY4LjEtMjUuMmw0LjggMTguMmg2NS40VjczNC45YzAtNjIuNy0yNi44LTEwOS44LTExNi44LTEwOS44LTQyLjkgMC04NS4yIDE2LjEtMTEwLjQgMzMuMmwyNy45IDUwLjRjMjAuOS0xMC43IDQ2LjYtMTkuOCA3NC41LTE5LjggMzIuNyAwIDUwLjkgMTYuNiA1MC45IDQxLjN2MTguMmMtMTAuMi03LTMyLjItMTUuNS02MC42LTE1LjUtNjUuNC0uMS0xMDguOCAzNy40LTEwOC44IDkyLjZ6bTczLjktMi4yYzAtMjMgMTkuOC0zOS4xIDQ4LjItMzkuMXM0OC44IDE0LjUgNDguOCAzOS4xYzAgMjMuNi0yMC40IDM4LjYtNDguMiAzOC42cy00OC44LTE1LjUtNDguOC0zOC42em0zNDguOSAzMC42Yy00Ni42IDAtNzkuOC0zMy44LTc5LjgtODEuNCAwLTQ1IDI5LjUtODIgNzcuMi04MiAzMS42IDAgNTMuMSAxNS41IDY1LjQgMjYuOGwyMC45LTYyLjJjLTE4LjItMTMuOS00Ny4yLTMwLTg4LjQtMzAtODUuMiAwLTE0OSA2Mi43LTE0OSAxNDcuOXM2Mi4yIDE0Ni4zIDE0OS41IDE0Ni4zYzQwLjcgMCA3MS4zLTE3LjEgODcuMy0zMGwtMTkuOC02MC41Yy0xMi40IDEwLjEtMzQuOSAyNS4xLTYzLjMgMjUuMXptMTEwLjkgNTguNGg3My45Vjc2Ny42bDkzLjggMTQ0LjdoODYuOEwzMzc1LjYgNzU5bDk4LjYtMTI3aC04My4xbC05MCAxMTcuOXYtMjI1aC03My45djM4Ny40eiIvPjwvc3ZnPg=="}},t={};function r(n){if(t[n])return t[n].exports;var i=t[n]={id:n,exports:{}};return e[n].call(i.exports,i,i.exports,r),i.exports}r.n=e=>{var t=e&&e.__esModule?()=>e.default:()=>e;return r.d(t,{a:t}),t},r.d=(e,t)=>{for(var n in t)r.o(t,n)&&!r.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},r.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),(()=>{"use strict";var e=r(323),t=r.n(e);function n(e,t,r,n,i,o,s){try{var a=e[o](s),u=a.value}catch(e){return void r(e)}a.done?t(u):Promise.resolve(u).then(n,i)}function i(e){return function(){var t=this,r=arguments;return new Promise((function(i,o){var s=e.apply(t,r);function a(e){n(s,i,o,a,u,"next",e)}function u(e){n(s,i,o,a,u,"throw",e)}a(void 0)}))}}r(695);var o=r(379),s=r.n(o),a=r(969);s()(a.Z,{insert:"head",singleton:!1}),a.Z.locals,(()=>{var e={formId:"registerform",passwordFieldId:"password",emailFieldId:"email",proxy:"https://api.allorigins.win/raw?url=",createAccountApiUrl:"https://app.billbee.io/api/v1/internalapi/createaccount",checkUsernameApiUrl:"https://app.billbee.io/api/v1/internalapi/checkusername?username=",loginUrl:"https://app.billbee.io/login",debug:!0},{formId:r,passwordFieldId:n,emailFieldId:o,proxy:s,loginUrl:a,debug:u}=e,{createAccountApiUrl:c,checkUsernameApiUrl:l}=e,g=document.getElementById(r),M=document.getElementById(n),f=document.getElementById(o),d=new(t())(g);s.length&&(c="".concat(s).concat(c),l="".concat(s).concat(l));var p={charMin:new RegExp("^(?=.{8,})"),charMax:new RegExp("^(?=.{8,20}$)"),letter:new RegExp("^(?=.*[a-zA-Z])"),num:new RegExp("^(?=.*[0-9])")},m={charMin:"Das Passwort muss <strong>mindestens 8 Zeichen</strong> lang sein.",letter:"Das Passwort muss aus mindestens <strong>einen Buchstaben</strong> bestehen.",charMax:"Das Passwort darf <strong>nicht über 20 Zeichen</strong> lang sein.",num:"Das Passwort muss aus mindestens <strong>einer Zahl</strong> bestehen."};function L(e){return new Promise((function(t,r){var n=new XMLHttpRequest;n.open(e.method,e.url),n.onload=function(){this.status>=200&&this.status<300?t(n.response):r({status:this.status,statusText:n.statusText})},n.onerror=function(){r({status:this.status,statusText:n.statusText})},e.headers&&Object.keys(e.headers).forEach((function(t){n.setRequestHeader(t,e.headers[t])}));var i=e.params;i&&"object"==typeof i&&(i=Object.keys(i).map((function(e){return encodeURIComponent(e)+"="+encodeURIComponent(i[e])})).join("&")),n.send(i)}))}Object.keys(p).forEach(((e,t)=>{d.addValidator(M,(function(t){return!!p[e].test(t)}),m[e],t,!1)})),d.addValidator(f,function(){var e=i((function*(e){if(!this.validity.typeMismatch)try{this.parentNode.classList.add("is-loading"),yield h(e)}catch(e){return!1}}));return function(t){return e.apply(this,arguments)}}(),"E-Mail wurde bereits registriert, Login?",1,!1);var y=null;function h(e){return j.apply(this,arguments)}function j(){return(j=i((function*(e){return new Promise((function(t,r){clearTimeout(y),y=setTimeout(i((function*(){u&&console.time("checkUserNameExistence duration: "),u&&console.count("username check count: "),yield L({method:"GET",url:l+e}).then((n=>n.length?(u&&console.info("%c ".concat(e," ist frei"),"color: #009d55; background-color:#c4eac1"),f.parentNode.classList.remove("is-loading"),f.parentNode.classList.add("is-successful"),setTimeout((function(){f.parentNode.classList.remove("is-successful")}),2e3),t(n),!0):(u&&console.error("%c ".concat(e," ist nicht frei"),"color: #d60202"),d.addError(f,'E-Mail bereits registriert, <a target="_blank" href="'.concat(a,'">Login</a>?')),f.parentNode.classList.remove("is-loading"),r(n),!1))).catch((t=>{if(409===t.status)return u&&console.error("%c ".concat(e," ist nicht frei"),"color: #d60202"),d.addError(f,'E-Mail bereits registriert, <a target="_blank" href="'.concat(a,'">Login</a>?')),f.parentNode.classList.remove("is-loading"),r(t),!1;throw u&&(console.group("Server Error"),console.info("Server not reachable, blocked because of CORS policy, try setting a proxy?"),console.error(t),console.groupEnd()),f.parentNode.classList.remove("is-loading"),r(t),new Error("Server not reachable, blocked because of CORS policy, try setting a proxy?",t)})),u&&console.timeEnd("checkUserNameExistence duration: ")})),400)}))}))).apply(this,arguments)}function T(e){return N.apply(this,arguments)}function N(){return(N=i((function*(e){var t=e;"on"==t.get("acceptterms")?t.set("acceptterms",!0):t.set("acceptterms",!1);var r=Object.fromEntries(t),n=JSON.stringify(r);u&&(console.group("About to sending follwing formData:"),console.table(r),console.groupEnd()),L({method:"POST",url:c,params:n,headers:{"Content-Type":"application/json; charset=utf-8"}}).then((e=>{var t=JSON.parse(e);u&&(console.group("Success POST Response data:"),console.log(t),console.groupEnd(),console.log(t.Data.ErrorMessage),console.log("Redirect User according to response OnTimeLogiUrl (deactivated in debug mode):"),console.log(t.Data.OneTimeLoginUrl)),u||(window.location.href=t.Data.OneTimeLoginUrl)})).catch((e=>{u&&(console.log("damn, error"),console.error(e)),d.addError(g,"Server-Fehler bei Senden der Daten, bitte später probieren.")}))}))).apply(this,arguments)}function v(){return(v=i((function*(e,t){yield h(t).then((()=>{u&&console.log("sendData"),T(e)})).then((()=>{u&&console.log("SUCCESS EVERYTHING")})).catch((e=>{u&&console.error(e)}))}))).apply(this,arguments)}g.addEventListener("submit",(function(e){e.preventDefault();var t=new FormData(this),r=f.value;u&&console.log("Form submitted.");var n=d.validate();u&&console.log("Form is validated:",n),n&&(u&&console.info("Form is valid, check username & sending data."),function(e,t){return v.apply(this,arguments)}(t,r).then((e=>console.log("Successfull",e))))}))})()})()})();
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 323:
+/***/ (function(module) {
+
+(function (global, factory) {
+   true ? module.exports = factory() : 0;
+})(this, function () {
+  'use strict';
+
+  var lang = {
+    en: {
+      required: "This field is required",
+      email: "This field requires a valid e-mail address",
+      number: "This field requires a number",
+      integer: "This field requires an integer value",
+      url: "This field requires a valid website URL",
+      tel: "This field requires a valid telephone number",
+      maxlength: "This fields length must be < ${1}",
+      minlength: "This fields length must be > ${1}",
+      min: "Minimum value for this field is ${1}",
+      max: "Maximum value for this field is ${1}",
+      pattern: "Please match the requested format",
+      equals: "The two fields do not match"
+    }
+  };
+
+  function findAncestor(el, cls) {
+    while ((el = el.parentElement) && !el.classList.contains(cls)) {}
+
+    return el;
+  }
+
+  function tmpl(o) {
+    var _arguments = arguments;
+    return this.replace(/\${([^{}]*)}/g, function (a, b) {
+      return _arguments[b];
+    });
+  }
+
+  function groupedElemCount(input) {
+    return input.pristine.self.form.querySelectorAll('input[name="' + input.getAttribute('name') + '"]:checked').length;
+  }
+
+  function mergeConfig(obj1, obj2) {
+    for (var attr in obj2) {
+      if (!(attr in obj1)) {
+        obj1[attr] = obj2[attr];
+      }
+    }
+
+    return obj1;
+  }
+
+  var defaultConfig = {
+    classTo: 'form-group',
+    errorClass: 'has-danger',
+    successClass: 'has-success',
+    errorTextParent: 'form-group',
+    errorTextTag: 'div',
+    errorTextClass: 'text-help'
+  };
+  var PRISTINE_ERROR = 'pristine-error';
+  var SELECTOR = "input:not([type^=hidden]):not([type^=submit]), select, textarea";
+  var ALLOWED_ATTRIBUTES = ["required", "min", "max", 'minlength', 'maxlength', 'pattern'];
+  var EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  var MESSAGE_REGEX = /-message(?:-([a-z]{2}(?:_[A-Z]{2})?))?/; // matches, -message, -message-en, -message-en_US
+
+  var currentLocale = 'en';
+  var validators = {};
+
+  var _ = function _(name, validator) {
+    validator.name = name;
+    if (validator.priority === undefined) validator.priority = 1;
+    validators[name] = validator;
+  };
+
+  _('text', {
+    fn: function fn(val) {
+      return true;
+    },
+    priority: 0
+  });
+
+  _('required', {
+    fn: function fn(val) {
+      return this.type === 'radio' || this.type === 'checkbox' ? groupedElemCount(this) : val !== undefined && val !== '';
+    },
+    priority: 99,
+    halt: true
+  });
+
+  _('email', {
+    fn: function fn(val) {
+      return !val || EMAIL_REGEX.test(val);
+    }
+  });
+
+  _('number', {
+    fn: function fn(val) {
+      return !val || !isNaN(parseFloat(val));
+    },
+    priority: 2
+  });
+
+  _('integer', {
+    fn: function fn(val) {
+      return !val || /^\d+$/.test(val);
+    }
+  });
+
+  _('minlength', {
+    fn: function fn(val, length) {
+      return !val || val.length >= parseInt(length);
+    }
+  });
+
+  _('maxlength', {
+    fn: function fn(val, length) {
+      return !val || val.length <= parseInt(length);
+    }
+  });
+
+  _('min', {
+    fn: function fn(val, limit) {
+      return !val || (this.type === 'checkbox' ? groupedElemCount(this) >= parseInt(limit) : parseFloat(val) >= parseFloat(limit));
+    }
+  });
+
+  _('max', {
+    fn: function fn(val, limit) {
+      return !val || (this.type === 'checkbox' ? groupedElemCount(this) <= parseInt(limit) : parseFloat(val) <= parseFloat(limit));
+    }
+  });
+
+  _('pattern', {
+    fn: function fn(val, pattern) {
+      var m = pattern.match(new RegExp('^/(.*?)/([gimy]*)$'));
+      return !val || new RegExp(m[1], m[2]).test(val);
+    }
+  });
+
+  _('equals', {
+    fn: function fn(val, otherFieldSelector) {
+      var other = document.querySelector(otherFieldSelector);
+      return other && (!val && !other.value || other.value === val);
+    }
+  });
+
+  function Pristine(form, config, live) {
+    var self = this;
+    init(form, config, live);
+
+    function init(form, config, live) {
+      form.setAttribute("novalidate", "true");
+      self.form = form;
+      self.config = mergeConfig(config || {}, defaultConfig);
+      self.live = !(live === false);
+      self.fields = Array.from(form.querySelectorAll(SELECTOR)).map(function (input) {
+        var fns = [];
+        var params = {};
+        var messages = {};
+        [].forEach.call(input.attributes, function (attr) {
+          if (/^data-pristine-/.test(attr.name)) {
+            var name = attr.name.substr(14);
+            var messageMatch = name.match(MESSAGE_REGEX);
+
+            if (messageMatch !== null) {
+              var locale = messageMatch[1] === undefined ? 'en' : messageMatch[1];
+              if (!messages.hasOwnProperty(locale)) messages[locale] = {};
+              messages[locale][name.slice(0, name.length - messageMatch[0].length)] = attr.value;
+              return;
+            }
+
+            if (name === 'type') name = attr.value;
+
+            _addValidatorToField(fns, params, name, attr.value);
+          } else if (~ALLOWED_ATTRIBUTES.indexOf(attr.name)) {
+            _addValidatorToField(fns, params, attr.name, attr.value);
+          } else if (attr.name === 'type') {
+            _addValidatorToField(fns, params, attr.value);
+          }
+        });
+        fns.sort(function (a, b) {
+          return b.priority - a.priority;
+        });
+        self.live && input.addEventListener(!~['radio', 'checkbox'].indexOf(input.getAttribute('type')) ? 'input' : 'change', function (e) {
+          self.validate(e.target);
+        }.bind(self));
+        return input.pristine = {
+          input: input,
+          validators: fns,
+          params: params,
+          messages: messages,
+          self: self
+        };
+      }.bind(self));
+    }
+
+    function _addValidatorToField(fns, params, name, value) {
+      var validator = validators[name];
+
+      if (validator) {
+        fns.push(validator);
+
+        if (value) {
+          var valueParams = name === "pattern" ? [value] : value.split(',');
+          valueParams.unshift(null); // placeholder for input's value
+
+          params[name] = valueParams;
+        }
+      }
+    }
+    /***
+     * Checks whether the form/input elements are valid
+     * @param input => input element(s) or a jquery selector, null for full form validation
+     * @param silent => do not show error messages, just return true/false
+     * @returns {boolean} return true when valid false otherwise
+     */
+
+
+    self.validate = function (input, silent) {
+      silent = input && silent === true || input === true;
+      var fields = self.fields;
+
+      if (input !== true && input !== false) {
+        if (input instanceof HTMLElement) {
+          fields = [input.pristine];
+        } else if (input instanceof NodeList || input instanceof (window.$ || Array) || input instanceof Array) {
+          fields = Array.from(input).map(function (el) {
+            return el.pristine;
+          });
+        }
+      }
+
+      var valid = true;
+
+      for (var i = 0; fields[i]; i++) {
+        var field = fields[i];
+
+        if (_validateField(field)) {
+          !silent && _showSuccess(field);
+        } else {
+          valid = false;
+          !silent && _showError(field);
+        }
+      }
+
+      return valid;
+    };
+    /***
+     * Get errors of a specific field or the whole form
+     * @param input
+     * @returns {Array|*}
+     */
+
+
+    self.getErrors = function (input) {
+      if (!input) {
+        var erroneousFields = [];
+
+        for (var i = 0; i < self.fields.length; i++) {
+          var field = self.fields[i];
+
+          if (field.errors.length) {
+            erroneousFields.push({
+              input: field.input,
+              errors: field.errors
+            });
+          }
+        }
+
+        return erroneousFields;
+      }
+
+      if (input.tagName && input.tagName.toLowerCase() === "select") {
+        return input.pristine.errors;
+      }
+
+      return input.length ? input[0].pristine.errors : input.pristine.errors;
+    };
+    /***
+     * Validates a single field, all validator functions are called and error messages are generated
+     * when a validator fails
+     * @param field
+     * @returns {boolean}
+     * @private
+     */
+
+
+    function _validateField(field) {
+      var errors = [];
+      var valid = true;
+
+      for (var i = 0; field.validators[i]; i++) {
+        var validator = field.validators[i];
+        var params = field.params[validator.name] ? field.params[validator.name] : [];
+        params[0] = field.input.value;
+
+        if (!validator.fn.apply(field.input, params)) {
+          valid = false;
+
+          if (typeof validator.msg === "function") {
+            errors.push(validator.msg(field.input.value, params));
+          } else if (typeof validator.msg === "string") {
+            errors.push(tmpl.apply(validator.msg, params));
+          } else if (validator.msg === Object(validator.msg) && validator.msg[currentLocale]) {
+            // typeof generates unnecessary babel code
+            errors.push(tmpl.apply(validator.msg[currentLocale], params));
+          } else if (field.messages[currentLocale] && field.messages[currentLocale][validator.name]) {
+            errors.push(tmpl.apply(field.messages[currentLocale][validator.name], params));
+          } else if (lang[currentLocale] && lang[currentLocale][validator.name]) {
+            errors.push(tmpl.apply(lang[currentLocale][validator.name], params));
+          }
+
+          if (validator.halt === true) {
+            break;
+          }
+        }
+      }
+
+      field.errors = errors;
+      return valid;
+    }
+    /***
+     * Add a validator to a specific dom element in a form
+     * @param elem => The dom element where the validator is applied to
+     * @param fn => validator function
+     * @param msg => message to show when validation fails. Supports templating. ${0} for the input's value, ${1} and
+     * so on are for the attribute values
+     * @param priority => priority of the validator function, higher valued function gets called first.
+     * @param halt => whether validation should stop for this field after current validation function
+     */
+
+
+    self.addValidator = function (elem, fn, msg, priority, halt) {
+      if (elem instanceof HTMLElement) {
+        elem.pristine.validators.push({
+          fn: fn,
+          msg: msg,
+          priority: priority,
+          halt: halt
+        });
+        elem.pristine.validators.sort(function (a, b) {
+          return b.priority - a.priority;
+        });
+      } else {
+        console.warn("The parameter elem must be a dom element");
+      }
+    };
+    /***
+     * An utility function that returns a 2-element array, first one is the element where error/success class is
+     * applied. 2nd one is the element where error message is displayed. 2nd element is created if doesn't exist and cached.
+     * @param field
+     * @returns {*}
+     * @private
+     */
+
+
+    function _getErrorElements(field) {
+      if (field.errorElements) {
+        return field.errorElements;
+      }
+
+      var errorClassElement = findAncestor(field.input, self.config.classTo);
+      var errorTextParent = null,
+          errorTextElement = null;
+
+      if (self.config.classTo === self.config.errorTextParent) {
+        errorTextParent = errorClassElement;
+      } else {
+        errorTextParent = errorClassElement.querySelector('.' + self.config.errorTextParent);
+      }
+
+      if (errorTextParent) {
+        errorTextElement = errorTextParent.querySelector('.' + PRISTINE_ERROR);
+
+        if (!errorTextElement) {
+          errorTextElement = document.createElement(self.config.errorTextTag);
+          errorTextElement.className = PRISTINE_ERROR + ' ' + self.config.errorTextClass;
+          errorTextParent.appendChild(errorTextElement);
+          errorTextElement.pristineDisplay = errorTextElement.style.display;
+        }
+      }
+
+      return field.errorElements = [errorClassElement, errorTextElement];
+    }
+
+    function _showError(field) {
+      var errorElements = _getErrorElements(field);
+
+      var errorClassElement = errorElements[0],
+          errorTextElement = errorElements[1];
+
+      if (errorClassElement) {
+        errorClassElement.classList.remove(self.config.successClass);
+        errorClassElement.classList.add(self.config.errorClass);
+      }
+
+      if (errorTextElement) {
+        errorTextElement.innerHTML = field.errors.join('<br/>');
+        errorTextElement.style.display = errorTextElement.pristineDisplay || '';
+      }
+    }
+    /***
+     * Adds error to a specific field
+     * @param input
+     * @param error
+     */
+
+
+    self.addError = function (input, error) {
+      input = input.length ? input[0] : input;
+      input.pristine.errors.push(error);
+
+      _showError(input.pristine);
+    };
+
+    function _removeError(field) {
+      var errorElements = _getErrorElements(field);
+
+      var errorClassElement = errorElements[0],
+          errorTextElement = errorElements[1];
+
+      if (errorClassElement) {
+        // IE > 9 doesn't support multiple class removal
+        errorClassElement.classList.remove(self.config.errorClass);
+        errorClassElement.classList.remove(self.config.successClass);
+      }
+
+      if (errorTextElement) {
+        errorTextElement.innerHTML = '';
+        errorTextElement.style.display = 'none';
+      }
+
+      return errorElements;
+    }
+
+    function _showSuccess(field) {
+      var errorClassElement = _removeError(field)[0];
+
+      errorClassElement && errorClassElement.classList.add(self.config.successClass);
+    }
+    /***
+     * Resets the errors
+     */
+
+
+    self.reset = function () {
+      for (var i = 0; self.fields[i]; i++) {
+        self.fields[i].errorElements = null;
+      }
+
+      Array.from(self.form.querySelectorAll('.' + PRISTINE_ERROR)).map(function (elem) {
+        elem.parentNode.removeChild(elem);
+      });
+      Array.from(self.form.querySelectorAll('.' + self.config.classTo)).map(function (elem) {
+        elem.classList.remove(self.config.successClass);
+        elem.classList.remove(self.config.errorClass);
+      });
+    };
+    /***
+     * Resets the errors and deletes all pristine fields
+     */
+
+
+    self.destroy = function () {
+      self.reset();
+      self.fields.forEach(function (field) {
+        delete field.input.pristine;
+      });
+      self.fields = [];
+    };
+
+    self.setGlobalConfig = function (config) {
+      defaultConfig = config;
+    };
+
+    return self;
+  }
+  /***
+   *
+   * @param name => Name of the global validator
+   * @param fn => validator function
+   * @param msg => message to show when validation fails. Supports templating. ${0} for the input's value, ${1} and
+   * so on are for the attribute values
+   * @param priority => priority of the validator function, higher valued function gets called first.
+   * @param halt => whether validation should stop for this field after current validation function
+   */
+
+
+  Pristine.addValidator = function (name, fn, msg, priority, halt) {
+    _(name, {
+      fn: fn,
+      msg: msg,
+      priority: priority,
+      halt: halt
+    });
+  };
+
+  Pristine.addMessages = function (locale, messages) {
+    var langObj = lang.hasOwnProperty(locale) ? lang[locale] : lang[locale] = {};
+    Object.keys(messages).forEach(function (key, index) {
+      langObj[key] = messages[key];
+    });
+  };
+
+  Pristine.setLocale = function (locale) {
+    currentLocale = locale;
+  };
+
+  return Pristine;
+});
+
+/***/ }),
+
+/***/ 969:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(645);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+;
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ 645:
+/***/ ((module) => {
+
+"use strict";
+
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+// eslint-disable-next-line func-names
+module.exports = function (cssWithMappingToString) {
+  var list = []; // return the list of modules as css string
+
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = cssWithMappingToString(item);
+
+      if (item[2]) {
+        return "@media ".concat(item[2], " {").concat(content, "}");
+      }
+
+      return content;
+    }).join('');
+  }; // import a list of modules into the list
+  // eslint-disable-next-line func-names
+
+
+  list.i = function (modules, mediaQuery, dedupe) {
+    if (typeof modules === 'string') {
+      // eslint-disable-next-line no-param-reassign
+      modules = [[null, modules, '']];
+    }
+
+    var alreadyImportedModules = {};
+
+    if (dedupe) {
+      for (var i = 0; i < this.length; i++) {
+        // eslint-disable-next-line prefer-destructuring
+        var id = this[i][0];
+
+        if (id != null) {
+          alreadyImportedModules[id] = true;
+        }
+      }
+    }
+
+    for (var _i = 0; _i < modules.length; _i++) {
+      var item = [].concat(modules[_i]);
+
+      if (dedupe && alreadyImportedModules[item[0]]) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      if (mediaQuery) {
+        if (!item[2]) {
+          item[2] = mediaQuery;
+        } else {
+          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
+        }
+      }
+
+      list.push(item);
+    }
+  };
+
+  return list;
+};
+
+/***/ }),
+
+/***/ 15:
+/***/ ((module) => {
+
+"use strict";
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+module.exports = function cssWithMappingToString(item) {
+  var _item = _slicedToArray(item, 4),
+      content = _item[1],
+      cssMapping = _item[3];
+
+  if (typeof btoa === 'function') {
+    // eslint-disable-next-line no-undef
+    var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(cssMapping))));
+    var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
+    var sourceMapping = "/*# ".concat(data, " */");
+    var sourceURLs = cssMapping.sources.map(function (source) {
+      return "/*# sourceURL=".concat(cssMapping.sourceRoot || '').concat(source, " */");
+    });
+    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+  }
+
+  return [content].join('\n');
+};
+
+/***/ }),
+
+/***/ 379:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var isOldIE = function isOldIE() {
+  var memo;
+  return function memorize() {
+    if (typeof memo === 'undefined') {
+      // Test for IE <= 9 as proposed by Browserhacks
+      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+      // Tests for existence of standard globals is to allow style-loader
+      // to operate correctly into non-standard environments
+      // @see https://github.com/webpack-contrib/style-loader/issues/177
+      memo = Boolean(window && document && document.all && !window.atob);
+    }
+
+    return memo;
+  };
+}();
+
+var getTarget = function getTarget() {
+  var memo = {};
+  return function memorize(target) {
+    if (typeof memo[target] === 'undefined') {
+      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself
+
+      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+        try {
+          // This will throw an exception if access to iframe is blocked
+          // due to cross-origin restrictions
+          styleTarget = styleTarget.contentDocument.head;
+        } catch (e) {
+          // istanbul ignore next
+          styleTarget = null;
+        }
+      }
+
+      memo[target] = styleTarget;
+    }
+
+    return memo[target];
+  };
+}();
+
+var stylesInDom = [];
+
+function getIndexByIdentifier(identifier) {
+  var result = -1;
+
+  for (var i = 0; i < stylesInDom.length; i++) {
+    if (stylesInDom[i].identifier === identifier) {
+      result = i;
+      break;
+    }
+  }
+
+  return result;
+}
+
+function modulesToDom(list, options) {
+  var idCountMap = {};
+  var identifiers = [];
+
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i];
+    var id = options.base ? item[0] + options.base : item[0];
+    var count = idCountMap[id] || 0;
+    var identifier = "".concat(id, " ").concat(count);
+    idCountMap[id] = count + 1;
+    var index = getIndexByIdentifier(identifier);
+    var obj = {
+      css: item[1],
+      media: item[2],
+      sourceMap: item[3]
+    };
+
+    if (index !== -1) {
+      stylesInDom[index].references++;
+      stylesInDom[index].updater(obj);
+    } else {
+      stylesInDom.push({
+        identifier: identifier,
+        updater: addStyle(obj, options),
+        references: 1
+      });
+    }
+
+    identifiers.push(identifier);
+  }
+
+  return identifiers;
+}
+
+function insertStyleElement(options) {
+  var style = document.createElement('style');
+  var attributes = options.attributes || {};
+
+  if (typeof attributes.nonce === 'undefined') {
+    var nonce =  true ? __webpack_require__.nc : 0;
+
+    if (nonce) {
+      attributes.nonce = nonce;
+    }
+  }
+
+  Object.keys(attributes).forEach(function (key) {
+    style.setAttribute(key, attributes[key]);
+  });
+
+  if (typeof options.insert === 'function') {
+    options.insert(style);
+  } else {
+    var target = getTarget(options.insert || 'head');
+
+    if (!target) {
+      throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
+    }
+
+    target.appendChild(style);
+  }
+
+  return style;
+}
+
+function removeStyleElement(style) {
+  // istanbul ignore if
+  if (style.parentNode === null) {
+    return false;
+  }
+
+  style.parentNode.removeChild(style);
+}
+/* istanbul ignore next  */
+
+
+var replaceText = function replaceText() {
+  var textStore = [];
+  return function replace(index, replacement) {
+    textStore[index] = replacement;
+    return textStore.filter(Boolean).join('\n');
+  };
+}();
+
+function applyToSingletonTag(style, index, remove, obj) {
+  var css = remove ? '' : obj.media ? "@media ".concat(obj.media, " {").concat(obj.css, "}") : obj.css; // For old IE
+
+  /* istanbul ignore if  */
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = replaceText(index, css);
+  } else {
+    var cssNode = document.createTextNode(css);
+    var childNodes = style.childNodes;
+
+    if (childNodes[index]) {
+      style.removeChild(childNodes[index]);
+    }
+
+    if (childNodes.length) {
+      style.insertBefore(cssNode, childNodes[index]);
+    } else {
+      style.appendChild(cssNode);
+    }
+  }
+}
+
+function applyToTag(style, options, obj) {
+  var css = obj.css;
+  var media = obj.media;
+  var sourceMap = obj.sourceMap;
+
+  if (media) {
+    style.setAttribute('media', media);
+  } else {
+    style.removeAttribute('media');
+  }
+
+  if (sourceMap && typeof btoa !== 'undefined') {
+    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
+  } // For old IE
+
+  /* istanbul ignore if  */
+
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    while (style.firstChild) {
+      style.removeChild(style.firstChild);
+    }
+
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var singleton = null;
+var singletonCounter = 0;
+
+function addStyle(obj, options) {
+  var style;
+  var update;
+  var remove;
+
+  if (options.singleton) {
+    var styleIndex = singletonCounter++;
+    style = singleton || (singleton = insertStyleElement(options));
+    update = applyToSingletonTag.bind(null, style, styleIndex, false);
+    remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+  } else {
+    style = insertStyleElement(options);
+    update = applyToTag.bind(null, style, options);
+
+    remove = function remove() {
+      removeStyleElement(style);
+    };
+  }
+
+  update(obj);
+  return function updateStyle(newObj) {
+    if (newObj) {
+      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {
+        return;
+      }
+
+      update(obj = newObj);
+    } else {
+      remove();
+    }
+  };
+}
+
+module.exports = function (list, options) {
+  options = options || {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+  // tags it will allow on a page
+
+  if (!options.singleton && typeof options.singleton !== 'boolean') {
+    options.singleton = isOldIE();
+  }
+
+  list = list || [];
+  var lastIdentifiers = modulesToDom(list, options);
+  return function update(newList) {
+    newList = newList || [];
+
+    if (Object.prototype.toString.call(newList) !== '[object Array]') {
+      return;
+    }
+
+    for (var i = 0; i < lastIdentifiers.length; i++) {
+      var identifier = lastIdentifiers[i];
+      var index = getIndexByIdentifier(identifier);
+      stylesInDom[index].references--;
+    }
+
+    var newLastIdentifiers = modulesToDom(newList, options);
+
+    for (var _i = 0; _i < lastIdentifiers.length; _i++) {
+      var _identifier = lastIdentifiers[_i];
+
+      var _index = getIndexByIdentifier(_identifier);
+
+      if (stylesInDom[_index].references === 0) {
+        stylesInDom[_index].updater();
+
+        stylesInDom.splice(_index, 1);
+      }
+    }
+
+    lastIdentifiers = newLastIdentifiers;
+  };
+};
+
+/***/ }),
+
+/***/ 695:
+/***/ ((module) => {
+
+"use strict";
+module.exports = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzOTE2IDE1MjQiPjx0aXRsZT5sb2dvLW9uLWRhcmstYmc8L3RpdGxlPjxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik04MjIgMzM2bDM4NyAyMTguOXY0MzcuOWwtMzg3IDIxOC45LTM4Ny0yMTguOVY1NTQuOXoiLz48cGF0aCBmaWxsPSIjOEVENkZCIiBkPSJNMTEzOS45IDk3Ny43bC0zMDUuMSAxNzIuNnYtMTM0LjRsMTkwLjEtMTA0LjYgMTE1IDY2LjR6bTIwLjktMTguOVY1OTcuOWwtMTExLjYgNjQuNXYyMzJsMTExLjYgNjQuNHptLTY1Ny45IDE4LjlMODA4IDExNTAuM3YtMTM0LjRMNjE3LjggOTExLjNsLTExNC45IDY2LjR6TTQ4MiA5NTguOFY1OTcuOWwxMTEuNiA2NC41djIzMkw0ODIgOTU4Ljh6bTEzLjEtMzg0LjNsMzEyLjktMTc3djEyOS45TDYwNy41IDYzNy43bC0xLjYuOS0xMTAuOC02NC4xem02NTIuNiAwbC0zMTIuOS0xNzd2MTI5LjlsMjAwLjUgMTEwLjIgMS42LjkgMTEwLjgtNjR6Ii8+PHBhdGggZmlsbD0iIzFDNzhDMCIgZD0iTTgwOCA5ODUuM0w2MjAuNCA4ODIuMVY2NzcuOEw4MDggNzg2LjF2MTk5LjJ6bTI2LjggMGwxODcuNi0xMDMuMVY2NzcuOEw4MzQuOCA3ODYuMXYxOTkuMnptLTEzLjQtMjA3ek02MzMuMSA2NTQuMmwxODguMy0xMDMuNSAxODguMyAxMDMuNS0xODguMyAxMDguNy0xODguMy0xMDguN3oiLz48cGF0aCBmaWxsPSIjRjVGQUZBIiBkPSJNMTU5OS4zIDkxMi4zaDgyLjVsODQuMS0yODAuMmgtODAuNGwtNDkuOCAxOTguOC01My4xLTE5OC44SDE1MTNsLTUzLjYgMTk4LjgtNDkuMy0xOTguOGgtODAuNGw4My42IDI4MC4yaDgyLjVsNTItMTc5LjUgNTEuNSAxNzkuNXpNMTc3MC4yIDc3M2MwIDg0LjEgNTcuMyAxNDYuMyAxNDcuNCAxNDYuMyA2OS43IDAgMTA3LjItNDEuOCAxMTcuOS02MS42bC00OC44LTM3Yy04IDExLjgtMzAgMzQuMy02OC4xIDM0LjMtNDEuMyAwLTcxLjMtMjYuOC03Mi45LTY0LjNIMjA0M2MuNS01LjQuNS0xMC43LjUtMTYuMSAwLTkxLjYtNDkuMy0xNDkuNS0xMzYuMS0xNDkuNS03OS45IDAtMTM3LjIgNjMuMi0xMzcuMiAxNDcuOXptNzcuNy0zMC42YzMuMi0zMi4xIDI1LjctNTYuOCA2MC42LTU2LjggMzMuOCAwIDU4LjQgMjIuNSA2MCA1Ni44aC0xMjAuNnptMjIzLjUgMTY5LjloNjkuN3YtMjguOWM3LjUgOS4xIDM1LjQgMzUuOSA4My4xIDM1LjkgODAuNCAwIDEzNy4yLTYwLjUgMTM3LjItMTQ2LjggMC04Ni44LTUyLjUtMTQ3LjMtMTMyLjktMTQ3LjMtNDguMiAwLTc2LjEgMjYuOC04My4xIDM2LjRWNTI0LjloLTczLjl2Mzg3LjR6bTcxLjgtMTM5LjNjMC01Mi41IDMxLjEtODIuNSA3MS44LTgyLjUgNDIuOSAwIDcxLjggMzMuOCA3MS44IDgyLjUgMCA0OS44LTMwIDgwLjktNzEuOCA4MC45LTQ1IDAtNzEuOC0zNi41LTcxLjgtODAuOXptMjQ3IDIzOS41aDczLjlWODgzLjNjNyA5LjEgMzQuOCAzNS45IDgzLjEgMzUuOSA4MC40IDAgMTMyLjktNjAuNSAxMzIuOS0xNDcuMyAwLTg1LjctNTYuOC0xNDYuOC0xMzcuMi0xNDYuOC00Ny43IDAtNzUuNiAyNi44LTgzLjEgMzYuNFY2MzJoLTY5Ljd2MzgwLjV6bTcxLjgtMjQxLjFjMC00NC41IDI2LjgtODAuOSA3MS44LTgwLjkgNDEuOCAwIDcxLjggMzEuMSA3MS44IDgwLjkgMCA0OC44LTI4LjkgODIuNS03MS44IDgyLjUtNDAuNyAwLTcxLjgtMzAtNzEuOC04Mi41em0yMzEuNSA1NC4xYzAgNTguOSA0OC4yIDkzLjggMTA1IDkzLjggMzIuMiAwIDUzLjYtOS42IDY4LjEtMjUuMmw0LjggMTguMmg2NS40VjczNC45YzAtNjIuNy0yNi44LTEwOS44LTExNi44LTEwOS44LTQyLjkgMC04NS4yIDE2LjEtMTEwLjQgMzMuMmwyNy45IDUwLjRjMjAuOS0xMC43IDQ2LjYtMTkuOCA3NC41LTE5LjggMzIuNyAwIDUwLjkgMTYuNiA1MC45IDQxLjN2MTguMmMtMTAuMi03LTMyLjItMTUuNS02MC42LTE1LjUtNjUuNC0uMS0xMDguOCAzNy40LTEwOC44IDkyLjZ6bTczLjktMi4yYzAtMjMgMTkuOC0zOS4xIDQ4LjItMzkuMXM0OC44IDE0LjUgNDguOCAzOS4xYzAgMjMuNi0yMC40IDM4LjYtNDguMiAzOC42cy00OC44LTE1LjUtNDguOC0zOC42em0zNDguOSAzMC42Yy00Ni42IDAtNzkuOC0zMy44LTc5LjgtODEuNCAwLTQ1IDI5LjUtODIgNzcuMi04MiAzMS42IDAgNTMuMSAxNS41IDY1LjQgMjYuOGwyMC45LTYyLjJjLTE4LjItMTMuOS00Ny4yLTMwLTg4LjQtMzAtODUuMiAwLTE0OSA2Mi43LTE0OSAxNDcuOXM2Mi4yIDE0Ni4zIDE0OS41IDE0Ni4zYzQwLjcgMCA3MS4zLTE3LjEgODcuMy0zMGwtMTkuOC02MC41Yy0xMi40IDEwLjEtMzQuOSAyNS4xLTYzLjMgMjUuMXptMTEwLjkgNTguNGg3My45Vjc2Ny42bDkzLjggMTQ0LjdoODYuOEwzMzc1LjYgNzU5bDk4LjYtMTI3aC04My4xbC05MCAxMTcuOXYtMjI1aC03My45djM4Ny40eiIvPjwvc3ZnPg==";
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => module['default'] :
+/******/ 				() => module;
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+(() => {
+"use strict";
+
+// EXTERNAL MODULE: ./src/js/vendor/pristine.js
+var vendor_pristine = __webpack_require__(323);
+var pristine_default = /*#__PURE__*/__webpack_require__.n(vendor_pristine);
+// CONCATENATED MODULE: ./src/js/components/signup.js
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+var SignUp = () => {
+  // -----------------------
+  // Variables Configuration
+  // -----------------------
+  var formConfig = {
+    // Form Inputs
+    formId: "registerform",
+    passwordFieldId: "password",
+    emailFieldId: "email",
+    // API
+    proxy: "https://api.allorigins.win/raw?url=",
+    createAccountApiUrl: "https://app.billbee.io/api/v1/internalapi/createaccount",
+    checkUsernameApiUrl: "https://app.billbee.io/api/v1/internalapi/checkusername?username=",
+    loginUrl: "https://app.billbee.io/login",
+    debug: true
+  };
+  var {
+    formId,
+    passwordFieldId,
+    emailFieldId,
+    proxy,
+    loginUrl,
+    debug
+  } = formConfig;
+  var {
+    createAccountApiUrl,
+    checkUsernameApiUrl
+  } = formConfig; // ------------------
+  // HTML Node Elements
+  // ------------------
+
+  var form = document.getElementById(formId); // Get the according password field as node
+
+  var passwordField = document.getElementById(passwordFieldId); // Email Field as node
+
+  var emailField = document.getElementById(emailFieldId); // create the pristine instance
+
+  var pristine = new (pristine_default())(form); // SetUp API URLS
+  // If we need a proxy (to avoid CORS conflicts) we need to prefix the url with it
+
+  if (proxy.length) {
+    createAccountApiUrl = "".concat(proxy).concat(createAccountApiUrl);
+    checkUsernameApiUrl = "".concat(proxy).concat(checkUsernameApiUrl);
+  } // -------------------
+  // Password validation
+  // -------------------
+  // 8-20 Characters
+  // min one letter
+  // min one number
+
+
+  var regEx = {
+    charMin: new RegExp("^(?=.{8,})"),
+    charMax: new RegExp("^(?=.{8,20}$)"),
+    letter: new RegExp("^(?=.*[a-zA-Z])"),
+    num: new RegExp("^(?=.*[0-9])")
+  };
+  var pwdText = {
+    charMin: "Das Passwort muss <strong>mindestens 8 Zeichen</strong> lang sein.",
+    letter: "Das Passwort muss aus mindestens <strong>einen Buchstaben</strong> bestehen.",
+    charMax: "Das Passwort darf <strong>nicht über 20 Zeichen</strong> lang sein.",
+    num: "Das Passwort muss aus mindestens <strong>einer Zahl</strong> bestehen."
+  }; // go through every rule and show the error text (source: https://codepen.io/sha256/pen/KEjabq?editors=1010)
+
+  Object.keys(regEx).forEach((key, index) => {
+    pristine.addValidator(passwordField, function (value) {
+      if (regEx[key].test(value)) {
+        return true;
+      }
+
+      return false;
+    }, pwdText[key], index, false);
+  }); // Request Function
+
+  function makeRequest(opts) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(opts.method, opts.url);
+
+      xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          resolve(xhr.response);
+        } else {
+          reject({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+
+      xhr.onerror = function () {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+
+      if (opts.headers) {
+        Object.keys(opts.headers).forEach(function (key) {
+          xhr.setRequestHeader(key, opts.headers[key]);
+        });
+      }
+
+      var params = opts.params; // We'll need to stringify if we've been given an object
+      // If we have a string, this is skipped.
+
+      if (params && typeof params === "object") {
+        params = Object.keys(params).map(function (key) {
+          return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+        }).join("&");
+      }
+
+      xhr.send(params);
+    });
+  } // ------------------
+  // E-Mail API Request
+  // ------------------
+  // Checks if the EMAIL is already registered on the API endpoint
+
+
+  pristine.addValidator(emailField, /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator(function* (value) {
+      if (!this.validity.typeMismatch) {
+        try {
+          this.parentNode.classList.add('is-loading');
+          yield checkUsernameExistence(value);
+        } catch (_unused) {
+          return false;
+        }
+      }
+    });
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }(), "E-Mail wurde bereits registriert, Login?", 1, false); // Init a timeout variable to be used for email check
+
+  var timeout = null;
+
+  function checkUsernameExistence(_x2) {
+    return _checkUsernameExistence.apply(this, arguments);
+  } // Post Function to create the account
+
+
+  function _checkUsernameExistence() {
+    _checkUsernameExistence = _asyncToGenerator(function* (value) {
+      return new Promise(function (resolve, reject) {
+        // Clear the timeout if it has already been set.
+        // This will prevent the previous task from executing
+        // if it has been less than <MILLISECONDS>
+        clearTimeout(timeout); // Make a new timeout set to go off in 1000ms (1 second)
+
+        timeout = setTimeout( /*#__PURE__*/_asyncToGenerator(function* () {
+          debug && console.time("checkUserNameExistence duration: ");
+          debug && console.count("username check count: ");
+          yield makeRequest({
+            method: "GET",
+            url: checkUsernameApiUrl + value
+          }).then(data => {
+            if (data.length) {
+              debug && console.info("%c ".concat(value, " ist frei"), "color: #009d55; background-color:#c4eac1");
+              emailField.parentNode.classList.remove('is-loading');
+              emailField.parentNode.classList.add('is-successful');
+              setTimeout(function () {
+                emailField.parentNode.classList.remove('is-successful');
+              }, 2000);
+              resolve(data);
+              return true;
+            } else {
+              //emailField.parentNode.getElementsByClassName('pristine-error')[0].remove();
+              debug && console.error("%c ".concat(value, " ist nicht frei"), "color: #d60202");
+              pristine.addError(emailField, "E-Mail bereits registriert, <a target=\"_blank\" href=\"".concat(loginUrl, "\">Login</a>?"));
+              emailField.parentNode.classList.remove('is-loading');
+              reject(data);
+              return false;
+            }
+          }).catch(err => {
+            if (err.status === 409) {
+              debug && console.error("%c ".concat(value, " ist nicht frei"), "color: #d60202");
+              pristine.addError(emailField, "E-Mail bereits registriert, <a target=\"_blank\" href=\"".concat(loginUrl, "\">Login</a>?"));
+              emailField.parentNode.classList.remove('is-loading');
+              reject(err);
+              return false;
+            } else {
+              if (debug) {
+                console.group("Server Error");
+                console.info("Server not reachable, blocked because of CORS policy, try setting a proxy?");
+                console.error(err);
+                console.groupEnd();
+              }
+
+              emailField.parentNode.classList.remove('is-loading');
+              reject(err);
+              throw new Error("Server not reachable, blocked because of CORS policy, try setting a proxy?", err);
+              return false;
+            }
+          });
+          debug && console.timeEnd("checkUserNameExistence duration: ");
+        }), 400);
+      });
+    });
+    return _checkUsernameExistence.apply(this, arguments);
+  }
+
+  function sendDataToCreateAccount(_x3) {
+    return _sendDataToCreateAccount.apply(this, arguments);
+  }
+
+  function _sendDataToCreateAccount() {
+    _sendDataToCreateAccount = _asyncToGenerator(function* (formData) {
+      // Bind the FormData object and the form element
+      var FD = formData; // We need to set the value of acceptterms to true, if its checked
+
+      FD.get("acceptterms") == "on" ? FD.set("acceptterms", true) : FD.set("acceptterms", false);
+      var FormDataObject = Object.fromEntries(FD);
+      var FormDataJson = JSON.stringify(FormDataObject);
+
+      if (debug) {
+        console.group("About to sending follwing formData:");
+        console.table(FormDataObject);
+        console.groupEnd();
+      }
+
+      makeRequest({
+        method: "POST",
+        url: createAccountApiUrl,
+        params: FormDataJson,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      }).then(response => {
+        var responseJson = JSON.parse(response);
+
+        if (debug) {
+          console.group("Success POST Response data:");
+          console.log(responseJson);
+          console.groupEnd();
+          console.log(responseJson.Data.ErrorMessage);
+          console.log("Redirect User according to response OnTimeLogiUrl (deactivated in debug mode):");
+          console.log(responseJson.Data.OneTimeLoginUrl);
+        } // Redirect user according to response redirect url
+
+
+        if (!debug) {
+          window.location.href = responseJson.Data.OneTimeLoginUrl;
+        }
+
+        ;
+      }).catch(err => {
+        if (debug) {
+          console.log("damn, error");
+          console.error(err);
+        }
+
+        pristine.addError(form, "Server-Fehler bei Senden der Daten, bitte später probieren.");
+      }); // @ToDo: Redirect user according to response.Data.OneTimeLoginUrl
+      // @ToDo: Add Track Signup
+    });
+    return _sendDataToCreateAccount.apply(this, arguments);
+  }
+
+  function onSubmit(_x4, _x5) {
+    return _onSubmit.apply(this, arguments);
+  } // Validate on Submit (and on input)
+
+
+  function _onSubmit() {
+    _onSubmit = _asyncToGenerator(function* (formData, emailValue) {
+      yield checkUsernameExistence(emailValue).then(() => {
+        debug && console.log("sendData");
+        sendDataToCreateAccount(formData);
+      }).then(() => {
+        debug && console.log("SUCCESS EVERYTHING");
+      }).catch(e => {
+        debug && console.error(e);
+      });
+    });
+    return _onSubmit.apply(this, arguments);
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    var emailValue = emailField.value;
+    debug && console.log("Form submitted."); // check if the form is valid
+
+    var formValid = pristine.validate(); // returns true or false
+
+    debug && console.log("Form is validated:", formValid);
+
+    if (formValid) {
+      debug && console.info("Form is valid, check username & sending data.");
+      onSubmit(formData, emailValue).then(r => console.log('Successfull', r));
+    } // Check, if the username is already registered against the API, if the email input is valid
+
+    /*if (!pristine.getErrors(emailField).length) {
+      checkUsernameExistence(emailField.value);
+      debug &&
+        console.info(
+          "E-Mail input has no errors, check username for existence. (Othter fields can still have errors)"
+        );
+      // @ToDo: According to return of the function add a new Error to the email field
+       // Register the username, when the form is valid
+    }*/
+
+  });
+};
+
+/* harmony default export */ const signup = (SignUp);
+/*
+jQuery(document).ready(function () {
+  var form = document.getElementById("signup");
+
+  form.onsubmit = function (e) {
+    // stop the regular form submission
+    e.preventDefault();
+
+    if (jQuery("#btnCreateAccountDo").hasClass("disabled")) {
+    } else {
+      jQuery("#signup").css("display", "none");
+      jQuery("#signingup").css("display", "inline");
+
+      // collect the form data while iterating over the inputs
+      var data = {};
+      data["email"] = jQuery("#username").val();
+      data["password"] = jQuery("#password").val();
+      if (jQuery("#acceptterms").is(":checked")) data["acceptterms"] = true;
+      else data["acceptterms"] = false;
+      if (jQuery("#newsletter").is(":checked")) data["newsletter"] = true;
+      else data["newsletter"] = false;
+
+      console.log(JSON.stringify(data));
+
+      signup(data);
+    }
+  };
+});
+
+function signup(data) {
+  jQuery.ajax({
+    type: "POST",
+    url: "https://app.billbee.io/api/v1/internalapi/createaccount",
+    data: JSON.stringify(data),
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
+    crossDomain: true,
+    success: function (response, status, jqXHR) {
+      // ga('send', 'event', 'Account', 'signup');
+      $FPROM.trackSignup(
+        {
+          email: data.email,
+          uid: response.Data.UserId
+        },
+        function () {}
+      );
+      window.location.href = response.Data.OneTimeLoginUrl;
+    },
+    error: function (jqXHR, status) {
+      console.log(jqXHR);
+      alert("fail" + status.code);
+    }
+  });
+}
+*/
+// EXTERNAL MODULE: ./src/images/webpack-logo.svg
+var webpack_logo = __webpack_require__(695);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
+var injectStylesIntoStyleTag = __webpack_require__(379);
+var injectStylesIntoStyleTag_default = /*#__PURE__*/__webpack_require__.n(injectStylesIntoStyleTag);
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[3]!./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].use[1]!./node_modules/postcss-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/index.scss
+var styles = __webpack_require__(969);
+// CONCATENATED MODULE: ./src/styles/index.scss
+;
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = injectStylesIntoStyleTag_default()(styles/* default */.Z, options);
+
+
+
+/* harmony default export */ const src_styles = (styles/* default.locals */.Z.locals || {});
+// CONCATENATED MODULE: ./src/index.js
+;
+signup(); // Test import of an asset
+
+ // Test import of styles
+
+ //import "./template.html.twig"
+// Appending to the DOM
+// const logo = document.createElement('img')
+// logo.src = webpackLogo
+//
+// const heading = document.createElement('h1')
+// heading.textContent = example()
+//
+// const app = document.querySelector('#root')
+// app.append(logo, heading)
+})();
+
+/******/ })()
+;
