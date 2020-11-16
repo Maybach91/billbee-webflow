@@ -20,7 +20,6 @@
     color: $yellow-color;
   }
 }
-
 .input-container {
   position: relative;
   z-index: 1;
@@ -101,10 +100,28 @@
     transform: rotate(360deg)
   }
 }
-
+.w-form-done, .w-form-fail {
+  display: none;
+}
+#signup.is-successful {
+  .w-form-done {
+    display: block;
+  }
+  form {
+    display: none;
+  }
+}
+#signup.is-failed {
+  .w-form-fail {
+    display: block;
+  }
+  form {
+    display: none;
+  }
+}
 .checkmark {
   display: inline-block;
-  opacity: 1;
+  opacity: 0;
   position: absolute;
   right: -5px;
   top: -1px;

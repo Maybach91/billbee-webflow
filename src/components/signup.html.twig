@@ -1,7 +1,7 @@
 <!-- component -->
 <div class="flex items-center justify-center">
-    <div class="w-full max-w-md form-group">
-        <form id="signup" class="bg-current shadow-lg rounded px-12 pt-6 pb-8 mb-4 form-group">
+    <div id="signup" class="w-full max-w-md form-group">
+        <form id="signup-form" class="bg-current shadow-lg rounded px-12 pt-6 pb-8 mb-4 form-group">
             <!-- @csrf -->
             <div class="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4">
                 Login
@@ -77,6 +77,9 @@
                 </a>
             </div>
         </form>
+
+        <div class="w-form-done">DONE</div>
+        <div class="w-form-fail">FAIL</div>
         <p class="text-center text-gray-500 text-xs">
             &copy;2020 All rights reserved.
         </p>

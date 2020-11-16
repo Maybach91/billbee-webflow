@@ -6,7 +6,7 @@ const SignUp = () => {
   // -----------------------
   const formConfig = {
     // Form Inputs
-    formId: "signup",
+    formId: "signup-form",
     passwordFieldId: "password",
     emailFieldId: "email",
     // API
@@ -38,6 +38,7 @@ const SignUp = () => {
 
   // Email Field as node
   const emailField = document.getElementById(emailFieldId);
+
 
   // create the pristine instance
   const pristine = new Pristine(form);
@@ -194,6 +195,7 @@ const SignUp = () => {
             );
 
             emailField.parentNode.classList.remove('is-loading');
+            emailField.parentNode.classList.add('is-failed');
             reject(data);
             return false;
           }
@@ -206,6 +208,7 @@ const SignUp = () => {
             );
 
             emailField.parentNode.classList.remove('is-loading');
+            form.classList.add('is-failed');
             reject(err);
             return false;
           } else {
@@ -217,7 +220,6 @@ const SignUp = () => {
               console.error(err);
               console.groupEnd();
             }
-
 
             emailField.parentNode.classList.remove('is-loading');
             reject(err);
@@ -277,6 +279,7 @@ const SignUp = () => {
     }).catch((err) => {
       if (debug) {
         console.log("damn, error");
+        form.classList.add('is-failed');
         console.error(err);
       }
       pristine.addError(
@@ -291,9 +294,9 @@ const SignUp = () => {
   }
 
   async function onSubmit (formData, emailValue) {
-    await checkUsernameExistence(emailValue).then(() => {
+    await checkUsernameExistence(emailValue).then(async () => {
       debug && console.log("sendData");
-      sendDataToCreateAccount(formData);
+      await sendDataToCreateAccount(formData);
     }).then(() => {
       debug && console.log("SUCCESS EVERYTHING");
     }).catch((e) => {
@@ -308,13 +311,24 @@ const SignUp = () => {
     const emailValue = emailField.value;
     debug && console.log("Form submitted.");
 
+    // Webflow Form Status Elements
+    const webflowFormDone = e.target.parentNode.getElementsByClassName('w-form-done')[0];
+    const webflowFormFail = e.target.parentNode.getElementsByClassName('w-form-fail')[0];
+    console.log("signup.js:316 webflowFormDone()", webflowFormDone);
+
     // check if the form is valid
     const formValid = pristine.validate(); // returns true or false
     debug && console.log("Form is validated:", formValid);
 
     if (formValid) {
       debug && console.info("Form is valid, check username & sending data.");
-      onSubmit(formData, emailValue).then(r => console.log('Successfull', r));
+      onSubmit(formData, emailValue).then(r => {
+        console.log('Successful', r);
+        form.parentNode.classList.add('is-successful');
+      }).catch(r => {
+        console.error('error', r);
+        form.parentNode.classList.add('is-failed');
+      });
     }
 
     // Check, if the username is already registered against the API, if the email input is valid
