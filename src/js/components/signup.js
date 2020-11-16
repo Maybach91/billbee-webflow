@@ -1,7 +1,6 @@
 import Pristine from '../vendor/pristine';
 
 const SignUp = () => {
-  console.log("signup.js:4 SignUp()", env);
   // -----------------------
   // Variables Configuration
   // -----------------------
