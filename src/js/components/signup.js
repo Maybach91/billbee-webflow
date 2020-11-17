@@ -16,7 +16,7 @@ const SignUp = () => {
     checkUsernameApiUrl:
       "https://app.billbee.io/api/v1/internalapi/checkusername?username=",
     loginUrl: "https://app.billbee.io/login",
-    debug: true
+    debug: (window.location.search.substr(1).indexOf('debug') >= 0) ? true : false
   };
   const {
     formId,
