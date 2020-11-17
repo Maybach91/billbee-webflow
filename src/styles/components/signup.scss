@@ -128,7 +128,7 @@
 
 #signup.is-loading {
   .form-loading {
-    display: block;
+    display: flex;
   }
   form {
     visibility: hidden;
