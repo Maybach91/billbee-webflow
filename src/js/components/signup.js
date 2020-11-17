@@ -334,8 +334,7 @@ const SignUp = () => {
     // check if the form is valid
     const formValid = pristine.validate(); // returns true or false
     debug && console.log("Form is validated:", formValid);
-
-    if (formValid && !pristine.getErrors(emailField).length) {
+    if (formValid && !pristine.getErrors(emailField)) {
       debug && console.info("Form is valid, check username & sending data.");
       onSubmit(formData, emailValue);
       // onSubmit(formData, emailValue).then(r => {
