@@ -283,7 +283,6 @@ const SignUp = () => {
         form.parentNode.classList.remove('is-failed');
         form.parentNode.classList.add('is-successful');
       }).catch(e => {
-
         form.parentNode.classList.remove('is-loading');
         form.parentNode.classList.remove('is-successful');
         form.parentNode.classList.add('is-failed');
@@ -336,7 +335,7 @@ const SignUp = () => {
     const formValid = pristine.validate(); // returns true or false
     debug && console.log("Form is validated:", formValid);
 
-    if (formValid) {
+    if (formValid && !pristine.getErrors(emailField).length) {
       debug && console.info("Form is valid, check username & sending data.");
       onSubmit(formData, emailValue);
       // onSubmit(formData, emailValue).then(r => {
