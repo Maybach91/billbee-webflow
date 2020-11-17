@@ -275,9 +275,10 @@ const SignUp = () => {
 
   function onSubmit (formData, emailValue) {
 
-    form.parentNode.classList.add('is-loading');
-    checkEmailExistence(emailValue).then(async () => {
+    checkEmailExistence(emailValue).then(() => {
       debug && console.log("sendData");
+      form.parentNode.classList.add('is-loading');
+
       sendDataToCreateAccount(formData).then(() => {
         form.parentNode.classList.remove('is-loading');
         form.parentNode.classList.remove('is-failed');
@@ -286,14 +287,9 @@ const SignUp = () => {
         form.parentNode.classList.remove('is-loading');
         form.parentNode.classList.remove('is-successful');
         form.parentNode.classList.add('is-failed');
-        console.error("signup.js:301 errorOnSubmit()", e);
         debug && console.error(e);
-         });
+      });
     }).catch((e) => {
-      form.parentNode.classList.remove('is-loading');
-      form.parentNode.classList.remove('is-successful');
-      form.parentNode.classList.add('is-failed');
-      console.error("signup.js:301 errorOnSubmit()", e);
       debug && console.error(e);
     });
   }
@@ -334,7 +330,8 @@ const SignUp = () => {
     // check if the form is valid
     const formValid = pristine.validate(); // returns true or false
     debug && console.log("Form is validated:", formValid);
-    if (formValid && !pristine.getErrors(emailField)) {
+
+    if (formValid) {
       debug && console.info("Form is valid, check username & sending data.");
       onSubmit(formData, emailValue);
       // onSubmit(formData, emailValue).then(r => {
