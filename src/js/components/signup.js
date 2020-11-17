@@ -240,7 +240,6 @@ const SignUp = () => {
           "Content-Type": "application/json; charset=utf-8"
         }
       }).then((response) => {
-        console.log("signup.js:242 reponse()", response);
         if (response) {
           const responseJson = JSON.parse(response);
           if (debug) {
@@ -306,12 +305,10 @@ const SignUp = () => {
         try {
           success = await checkEmailExistence(value.toLowerCase())
         } catch {
-          console.log("signup.js:298 nicht frei()",);
           success = false;
           return false;
         }
       }
-      console.log("signup.js:303 success()", success);
       return success;
     },
     "E-Mail wurde bereits registriert, Login?", // This DOES NOT WORK (https://github.com/sha256/Pristine/issues/51), so we handle errors in the checkEmailExistence function
@@ -330,7 +327,6 @@ const SignUp = () => {
     // Webflow Form Status Elements
     const webflowFormDone = e.target.parentNode.getElementsByClassName('w-form-done')[0];
     const webflowFormFail = e.target.parentNode.getElementsByClassName('w-form-fail')[0];
-    console.log("signup.js:316 webflowFormDone()", webflowFormDone);
 
     // check if the form is valid
     const formValid = pristine.validate(); // returns true or false
