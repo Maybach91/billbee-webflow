@@ -135,27 +135,11 @@ const SignUp = () => {
   // ------------------
   // Checks if the EMAIL is already registered on the API endpoint
 
-  pristine.addValidator(
-    emailField,
-    async function (value) {
-      if (!this.validity.typeMismatch) {
-        try {
-          this.parentNode.classList.add('is-loading');
-          await checkUsernameExistence(value.toLowerCase());
-        } catch {
-          return false;
-        }
-      }
-    },
-    "E-Mail wurde bereits registriert, Login?",
-    1,
-    false
-  );
-
   // Init a timeout variable to be used for email check
   let timeout = null;
 
-  async function checkUsernameExistence (value) {
+  const checkEmailExistence = (email) => {
+    const fieldParent = emailField.parentNode;
     return new Promise(function (resolve, reject) {
       // Clear the timeout if it has already been set.
       // This will prevent the previous task from executing
@@ -163,52 +147,50 @@ const SignUp = () => {
       clearTimeout(timeout);
 
       // Make a new timeout set to go off in 1000ms (1 second)
-      timeout = setTimeout(async function () {
-        debug && console.time("checkUserNameExistence duration: ");
-        debug && console.count("username check count: ");
-        await makeRequest({
+      timeout = setTimeout(function () {
+
+        makeRequest({
           method: "GET",
-          url: checkUsernameApiUrl + encodeURIComponent(value)
-        }).then((data) => {
-          if (data.length) {
+          url: checkUsernameApiUrl + encodeURIComponent(email)
+        }).then(response => {
+          if (response.length) {
             debug &&
             console.info(
-              `%c ${value} ist frei`,
+              `%c ${email} ist frei`,
               "color: #009d55; background-color:#c4eac1"
             );
-            emailField.parentNode.classList.remove('is-loading');
-            emailField.parentNode.classList.add('is-successful');
+            fieldParent.classList.remove('is-loading');
+            fieldParent.classList.add('is-successful');
 
             setTimeout(function () {
-              emailField.parentNode.classList.remove('is-successful');
+              fieldParent.classList.remove('is-successful');
             }, 2000);
 
-            resolve(data);
-            return true;
+            resolve(true);
           } else {
-            //emailField.parentNode.getElementsByClassName('pristine-error')[0].remove();
             debug &&
-            console.error(`%c ${value} ist nicht frei`, "color: #d60202");
+            console.error(`%c ${email} ist nicht frei`, "color: #d60202");
+
             pristine.addError(
               emailField,
               `E-Mail bereits registriert, <a target="_blank" href="${loginUrl}">Login</a>?`
             );
 
-            emailField.parentNode.classList.remove('is-loading');
-            reject(data);
-            return false;
+            fieldParent.classList.remove('is-loading');
+            reject(false);
+
           }
         }).catch((err) => {
+
           if (err.status === 409) {
-            debug && console.error(`%c ${value} ist nicht frei`, "color: #d60202");
+            debug && console.error(`%c ${email} ist nicht frei`, "color: #d60202");
             pristine.addError(
               emailField,
               `E-Mail bereits registriert, <a target="_blank" href="${loginUrl}">Login</a>?`
             );
 
-            emailField.parentNode.classList.remove('is-loading');
-            reject(err);
-            return false;
+            fieldParent.classList.remove('is-loading');
+            reject(false);
           } else {
             if (debug) {
               console.group("Server Error");
@@ -219,22 +201,20 @@ const SignUp = () => {
               console.groupEnd();
             }
 
-            emailField.parentNode.classList.remove('is-loading');
+            fieldParent.classList.remove('is-loading');
             reject(err);
             throw new Error(
               "Server not reachable, blocked because of CORS policy, try setting a proxy?",
               err
             );
-            return false;
           }
         });
-        debug && console.timeEnd("checkUserNameExistence duration: ");
       }, 400);
     });
   }
 
   // Post Function to create the account
-  async function sendDataToCreateAccount (formData) {
+  const sendDataToCreateAccount = (formData) => {
     // Bind the FormData object and the form element
     const FD = formData;
 
@@ -251,57 +231,94 @@ const SignUp = () => {
       console.table(FormDataObject);
       console.groupEnd();
     }
-    makeRequest({
-      method: "POST",
-      url: createAccountApiUrl,
-      params: FormDataJson,
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      }
-    }).then((response) => {
-      const responseJson = JSON.parse(response);
-      if (debug) {
-        console.group("Success POST Response data:");
-        console.log(responseJson);
-        console.groupEnd();
-        console.log(responseJson.Data.ErrorMessage);
-        console.log("Redirect User according to response OnTimeLogiUrl (deactivated in debug mode):");
-        console.log(responseJson.Data.OneTimeLoginUrl);
-      }
+    return new Promise(function (resolve, reject) {
+      makeRequest({
+        method: "POST",
+        url: createAccountApiUrl,
+        params: FormDataJson,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      }).then((response) => {
+        console.log("signup.js:242 reponse()", response);
+        if (response) {
+          const responseJson = JSON.parse(response);
+          if (debug) {
+            console.group("Success POST Response data:");
+            console.log(responseJson);
+            console.groupEnd();
+            console.log(responseJson.Data.ErrorMessage);
+            console.log("Redirect User according to response OnTimeLogiUrl (deactivated in debug mode):");
+            console.log(responseJson.Data.OneTimeLoginUrl);
+          }
+          resolve(true)
+        } else {
+          reject(false)
+        }
 
-      // Redirect user according to response redirect url
-      if (!debug) {
-        window.location.href = responseJson.Data.OneTimeLoginUrl
-      }
-      ;
-    }).catch((err) => {
-      if (debug) {
-        console.log("damn, error");
-        form.parentNode.classList.remove('is-successful');
-        form.parentNode.classList.add('is-failed');
-        console.error(err);
-      }
-      pristine.addError(
-        form,
-        "Server-Fehler bei Senden der Daten, bitte später probieren."
-      );
+        form.parentNode.classList.add('is-successful');
+        // Redirect user according to response redirect url
+        if (!debug) {
+          window.location.href = responseJson.Data.OneTimeLoginUrl
+        }
+
+      }).catch((err) => {
+        if (debug) {
+          console.log("damn, error");
+          console.error(err);
+        }
+        reject(err);
+      });
+
     });
 
-    // @ToDo: Redirect user according to response.Data.OneTimeLoginUrl
 
     // @ToDo: Add Track Signup
   }
 
-  async function onSubmit (formData, emailValue) {
-    checkUsernameExistence(emailValue).then(() => {
+  function onSubmit (formData, emailValue) {
+    checkEmailExistence(emailValue).then(async () => {
       debug && console.log("sendData");
-      return sendDataToCreateAccount(formData);
-    }).then(() => {
-      debug && console.log("SUCCESS EVERYTHING");
+      sendDataToCreateAccount(formData).then(() => {
+        form.parentNode.classList.remove('is-failed');
+        form.parentNode.classList.add('is-successful');
+      }).catch(e => {
+        form.parentNode.classList.remove('is-successful');
+        form.parentNode.classList.add('is-failed');
+        console.error("signup.js:301 errorOnSubmit()", e);
+        debug && console.error(e);
+         });
     }).catch((e) => {
+      form.parentNode.classList.remove('is-successful');
+      form.parentNode.classList.add('is-failed');
+      console.error("signup.js:301 errorOnSubmit()", e);
       debug && console.error(e);
     });
   }
+
+
+  pristine.addValidator(
+    emailField,
+    async function (value) {
+      let success;
+      if (!this.validity.typeMismatch) {
+        this.parentNode.classList.add('is-loading');
+        try {
+          success = await checkEmailExistence(value.toLowerCase())
+        } catch {
+          console.log("signup.js:298 nicht frei()",);
+          success = false;
+          return false;
+        }
+      }
+      console.log("signup.js:303 success()", success);
+      return success;
+    },
+    "E-Mail wurde bereits registriert, Login?", // This DOES NOT WORK (https://github.com/sha256/Pristine/issues/51), so we handle errors in the checkEmailExistence function
+    1,
+    false
+  );
+
 
   // Validate on Submit (and on input)
   form.addEventListener("submit", function (e) {
@@ -321,13 +338,14 @@ const SignUp = () => {
 
     if (formValid) {
       debug && console.info("Form is valid, check username & sending data.");
-      onSubmit(formData, emailValue).then(r => {
-        console.log('Successful', r);
-        form.parentNode.classList.add('is-successful');
-      }).catch(r => {
-        console.error('error', r);
-        form.parentNode.classList.add('is-failed');
-      });
+      onSubmit(formData, emailValue);
+      // onSubmit(formData, emailValue).then(r => {
+      //   console.log('Successful', r);
+      //   form.parentNode.classList.add('is-successful');
+      // }).catch(r => {
+      //   console.error('error', r);
+      //   form.parentNode.classList.add('is-failed');
+      // });
     }
 
     // Check, if the username is already registered against the API, if the email input is valid
