@@ -125,6 +125,15 @@
     display: none;
   }
 }
+
+#signup.is-loading {
+  .form-loading {
+    display: block;
+  }
+  form {
+    visibility: hidden;
+  }
+}
 .checkmark {
   display: inline-block;
   opacity: 0;

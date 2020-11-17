@@ -250,15 +250,13 @@ const SignUp = () => {
             console.log("Redirect User according to response OnTimeLogiUrl (deactivated in debug mode):");
             console.log(responseJson.Data.OneTimeLoginUrl);
           }
+          // Redirect user according to response redirect url
+          if (debug !== true) {
+            window.location.href = responseJson.Data.OneTimeLoginUrl
+          }
           resolve(true)
         } else {
           reject(false)
-        }
-
-        form.parentNode.classList.add('is-successful');
-        // Redirect user according to response redirect url
-        if (!debug) {
-          window.location.href = responseJson.Data.OneTimeLoginUrl
         }
 
       }).catch((err) => {
@@ -276,18 +274,24 @@ const SignUp = () => {
   }
 
   function onSubmit (formData, emailValue) {
+
+    form.parentNode.classList.add('is-loading');
     checkEmailExistence(emailValue).then(async () => {
       debug && console.log("sendData");
       sendDataToCreateAccount(formData).then(() => {
+        form.parentNode.classList.remove('is-loading');
         form.parentNode.classList.remove('is-failed');
         form.parentNode.classList.add('is-successful');
       }).catch(e => {
+
+        form.parentNode.classList.remove('is-loading');
         form.parentNode.classList.remove('is-successful');
         form.parentNode.classList.add('is-failed');
         console.error("signup.js:301 errorOnSubmit()", e);
         debug && console.error(e);
          });
     }).catch((e) => {
+      form.parentNode.classList.remove('is-loading');
       form.parentNode.classList.remove('is-successful');
       form.parentNode.classList.add('is-failed');
       console.error("signup.js:301 errorOnSubmit()", e);
