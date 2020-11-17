@@ -141,7 +141,7 @@ const SignUp = () => {
       if (!this.validity.typeMismatch) {
         try {
           this.parentNode.classList.add('is-loading');
-          await checkUsernameExistence(value);
+          await checkUsernameExistence(value.toLowerCase());
         } catch {
           return false;
         }
@@ -168,7 +168,7 @@ const SignUp = () => {
         debug && console.count("username check count: ");
         await makeRequest({
           method: "GET",
-          url: encodeURIComponent(checkUsernameApiUrl + value)
+          url: checkUsernameApiUrl + encodeURIComponent(value)
         }).then((data) => {
           if (data.length) {
             debug &&
@@ -195,7 +195,6 @@ const SignUp = () => {
             );
 
             emailField.parentNode.classList.remove('is-loading');
-            emailField.parentNode.classList.add('is-failed');
             reject(data);
             return false;
           }
@@ -208,7 +207,6 @@ const SignUp = () => {
             );
 
             emailField.parentNode.classList.remove('is-loading');
-            form.classList.add('is-failed');
             reject(err);
             return false;
           } else {
@@ -255,7 +253,7 @@ const SignUp = () => {
     }
     makeRequest({
       method: "POST",
-      url: encodeURIComponent(createAccountApiUrl),
+      url: createAccountApiUrl,
       params: FormDataJson,
       headers: {
         "Content-Type": "application/json; charset=utf-8"
@@ -279,7 +277,8 @@ const SignUp = () => {
     }).catch((err) => {
       if (debug) {
         console.log("damn, error");
-        form.classList.add('is-failed');
+        form.parentNode.classList.remove('is-successful');
+        form.parentNode.classList.add('is-failed');
         console.error(err);
       }
       pristine.addError(
@@ -294,9 +293,9 @@ const SignUp = () => {
   }
 
   async function onSubmit (formData, emailValue) {
-    await checkUsernameExistence(emailValue).then(async () => {
+    checkUsernameExistence(emailValue).then(() => {
       debug && console.log("sendData");
-      await sendDataToCreateAccount(formData);
+      return sendDataToCreateAccount(formData);
     }).then(() => {
       debug && console.log("SUCCESS EVERYTHING");
     }).catch((e) => {
@@ -308,7 +307,7 @@ const SignUp = () => {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     const formData = new FormData(this);
-    const emailValue = emailField.value;
+    const emailValue = emailField.value.toLowerCase();
     debug && console.log("Form submitted.");
 
     // Webflow Form Status Elements
